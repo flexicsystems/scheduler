@@ -14,14 +14,14 @@ namespace ThemePoint\Scheduler\Event\Event;
 
 use ThemePoint\Scheduler\Configuration\WorkerConfiguration;
 use ThemePoint\Scheduler\Interfaces\ScheduleEventInterface;
-use ThemePoint\Scheduler\Interfaces\ScheduleInterface;
+use ThemePoint\Scheduler\Schedule;
 
 final class WorkerRunningEvent implements WorkerEventInterface
 {
     public function __construct(
         readonly private WorkerConfiguration $workerConfiguration,
         readonly private ScheduleEventInterface $scheduleEvent,
-        readonly private ScheduleInterface $schedule,
+        readonly private Schedule $schedule,
         readonly private int $interval,
     ) {
     }
@@ -36,7 +36,7 @@ final class WorkerRunningEvent implements WorkerEventInterface
         return $this->scheduleEvent;
     }
 
-    public function getSchedule(): ScheduleInterface
+    public function getSchedule(): Schedule
     {
         return $this->schedule;
     }

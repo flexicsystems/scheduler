@@ -26,7 +26,7 @@ final class RunWorkerCommand extends Console\Command\Command
 
     private readonly EventDispatcher $eventDispatcher;
 
-    private ?array $scheduleEvents;
+    private array $scheduleEvents;
 
     public function __construct(
         ?EventDispatcher $eventDispatcher = null,
@@ -84,7 +84,7 @@ final class RunWorkerCommand extends Console\Command\Command
         $io = new SymfonyStyle($input, $output);
 
         $this->registerScheduleEvents(
-            $input->getArgument('schedule-event'),
+            (array) $input->getArgument('schedule-event'),
             $io,
         );
 
