@@ -1,9 +1,10 @@
 🕧 PHP Schedule
 ----------------
 
-PHP Schedule is a simple library for scheduling tasks in PHP. 
+PHP Schedule is a simple library for scheduling tasks in PHP.   
 It is inspired by the [Laravel Scheduler](https://laravel.com/docs/scheduling) and [Symfony Messenger](https://symfony.com/doc/current/components/messenger.html).
 
+----
 ### Installation
 
 Run
@@ -14,6 +15,7 @@ composer require jasonmccreary/php-schedule
 
 to install `themepoint/scheduler`.
 
+----
 ### Setup Events to schedule
 
 ```php
@@ -52,10 +54,13 @@ $worker = new \ThemePoint\Scheduler\Worker(
 $worker->run();
 ```
 
+----
 ### License
 This package is licensed using the GNU License.
 
 Please have a look at [LICENSE.md](LICENSE.md).
+
+----
 
 ### Changelog
 [1.0][2022-10-05] Initial release
