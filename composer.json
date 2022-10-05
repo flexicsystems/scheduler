@@ -1,0 +1,42 @@
+{
+  "name": "themepoint/scheduler",
+  "type": "library",
+  "description": "Provides an scheduler extension.",
+  "keywords": [
+    "symfony",
+    "sheduler"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Hendrik Legge",
+      "email": "info@themepoint.de",
+      "homepage": "https://themepoint.de"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "dragonmantank/cron-expression": "^3.3.2",
+    "psr/log": "^3.0.0",
+    "symfony/event-dispatcher": "^6.1.0",
+    "symfony/options-resolver": "^6.1.0"
+  },
+  "config": {
+    "platform": {
+      "php": "8.1"
+    },
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "ThemePoint\\Scheduler\\": "src/"
+    }
+  },
+  "require-dev": {
+    "ergebnis/php-cs-fixer-config": "^4.9.0",
+    "phpstan/phpstan": "^1.8.7",
+    "phpstan/phpstan-deprecation-rules": "^1.0.0",
+    "phpstan/phpstan-strict-rules": "^1.4.4"
+  }
+}
