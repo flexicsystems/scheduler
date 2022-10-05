@@ -36,7 +36,7 @@ final class IntervalListener implements EventSubscriberInterface
 
     public function onWorkerIntervalStart(WorkerIntervalStartEvent $event): void
     {
-        echo \sprintf('Run Worker Interval %s', $event->getInterval()) . \PHP_EOL;
+        $event->getWorkerConfiguration()->getIo()?->info(\sprintf('[ScheduleWorker] Interval %s started', $event->getInterval()));
 
         $memoryLimit = $event->getWorkerConfiguration()->options[WorkerOptions::MEMORY_LIMIT];
 

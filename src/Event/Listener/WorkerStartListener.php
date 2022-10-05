@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace ThemePoint\Scheduler\Event\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use ThemePoint\Scheduler\Event\Event\WorkerEventInterface;
 use ThemePoint\Scheduler\Event\Event\WorkerStartEvent;
 
 final class WorkerStartListener implements EventSubscriberInterface
@@ -25,8 +24,8 @@ final class WorkerStartListener implements EventSubscriberInterface
         ];
     }
 
-    public function onWorkerStart(WorkerEventInterface $event): void
+    public function onWorkerStart(WorkerStartEvent $event): void
     {
-        echo 'Start Worker' . \PHP_EOL;
+        $event->getWorkerConfiguration()->getIo()?->success('[ScheduleWorker] Starting worker');
     }
 }

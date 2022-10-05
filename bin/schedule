@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+if (!is_file(dirname(__DIR__).'/vendor/autoload.php')) {
+    throw new LogicException('Symfony Console is missing. Try running "composer install".');
+}
+
+require_once dirname(__DIR__).'/vendor/autoload.php';
+
+return (function () {
+    $app = new \Symfony\Component\Console\Application();
+
+    $app->add(new \ThemePoint\Scheduler\Command\RunWorkerCommand());
+    $app->setDefaultCommand(\ThemePoint\Scheduler\Command\RunWorkerCommand::COMMAND_NAME, true);
+
+    return $app->run();
+})();
