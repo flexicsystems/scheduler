@@ -10,7 +10,7 @@ It is inspired by the [Laravel Scheduler](https://laravel.com/docs/scheduling) a
 Run
 
 ```bash
-composer require jasonmccreary/php-schedule
+composer require themepoint/scheduler
 ```
 
 to install `themepoint/scheduler`.
