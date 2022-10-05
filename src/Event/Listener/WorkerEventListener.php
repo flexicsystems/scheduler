@@ -35,10 +35,11 @@ final class WorkerEventListener implements EventSubscriberInterface
     public function onWorkerRun(WorkerRunningEvent $event): void
     {
         $event->getWorkerConfiguration()->getIo()?->success(
-            \sprintf('[ScheduleWorker] Handle event "%s". Next run: "%s"',
+            \sprintf(
+                '[ScheduleWorker] Handle event "%s". Next run: "%s"',
                 $event->getScheduleEvent()::class,
-                $event->getSchedule()->getExpression()->getNextRunDate()->format('Y-m-d H:i:s')
-            )
+                $event->getSchedule()->getExpression()->getNextRunDate()->format('Y-m-d H:i:s'),
+            ),
         );
 
         ++$this->handledEvents;

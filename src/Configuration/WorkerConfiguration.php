@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace ThemePoint\Scheduler\Configuration;
 
+use Symfony\Component\Console\Style\SymfonyStyle;
 use ThemePoint\Scheduler\Constants\WorkerOptions;
 use ThemePoint\Scheduler\Worker;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class WorkerConfiguration extends Configuration
 {

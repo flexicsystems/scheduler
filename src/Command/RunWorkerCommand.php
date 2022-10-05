@@ -1,27 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Copyright (c) 2022-2022 ThemePoint
+ *
+ * @author Hendrik Legge <hendrik.legge@themepoint.de>
+ *
+ * @version 1.0.0
+ */
+
 namespace ThemePoint\Scheduler\Command;
 
 use Symfony\Component\Console;
-use Symfony\Component\Console\Style\SymfonyStyle as Cli;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use ThemePoint\Scheduler\Configuration\WorkerConfiguration;
 use ThemePoint\Scheduler\Constants\WorkerOptions;
 use ThemePoint\Scheduler\Interfaces\ScheduleEventInterface;
 use ThemePoint\Scheduler\Worker;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
-class RunWorkerCommand extends Console\Command\Command
+final class RunWorkerCommand extends Console\Command\Command
 {
     public const COMMAND_NAME = 'scheduler:run-worker';
 
-    readonly private EventDispatcher $eventDispatcher;
+    private readonly EventDispatcher $eventDispatcher;
 
     private ?array $scheduleEvents;
 
     public function __construct(
-        EventDispatcher $eventDispatcher = null,
-        array $scheduleEvents = []
+        ?EventDispatcher $eventDispatcher = null,
+        array $scheduleEvents = [],
     ) {
         parent::__construct(self::COMMAND_NAME);
 
@@ -37,46 +46,46 @@ class RunWorkerCommand extends Console\Command\Command
             null,
             Console\Input\InputOption::VALUE_REQUIRED,
             'The maximum number of events to run.',
-            null
+            null,
         );
         $this->addOption(
             WorkerOptions::INTERVAL_LIMIT,
             null,
             Console\Input\InputOption::VALUE_REQUIRED,
             'The maximum number of interval to run.',
-            null
+            null,
         );
         $this->addOption(
             WorkerOptions::TIME_LIMIT,
             null,
             Console\Input\InputOption::VALUE_REQUIRED,
             'The maximum time to run.',
-            null
+            null,
         );
         $this->addOption(
             WorkerOptions::MEMORY_LIMIT,
             null,
             Console\Input\InputOption::VALUE_REQUIRED,
             'The maximum memory to run.',
-            null
+            null,
         );
         $this->addArgument(
             'schedule-event',
             Console\Input\InputArgument::IS_ARRAY,
             'The schedule events to run.',
-            []
+            [],
         );
     }
 
     protected function execute(
         Console\Input\InputInterface $input,
-        Console\Output\OutputInterface $output
+        Console\Output\OutputInterface $output,
     ): int {
         $io = new SymfonyStyle($input, $output);
 
         $this->registerScheduleEvents(
             $input->getArgument('schedule-event'),
-            $io
+            $io,
         );
 
         $configuration = new WorkerConfiguration([
@@ -99,11 +108,12 @@ class RunWorkerCommand extends Console\Command\Command
 
     private function registerScheduleEvents(
         array $scheduleEvents,
-        SymfonyStyle $io
+        SymfonyStyle $io,
     ): void {
         if (\count($scheduleEvents) <= 0) {
             if (\count($this->scheduleEvents) <= 0) {
                 $io->error('No schedule events found.');
+
                 exit(1);
             }
 
@@ -118,6 +128,7 @@ class RunWorkerCommand extends Console\Command\Command
 
                 if (false === $path) {
                     $io->error(\sprintf('Schedule event file "%s" not found.', $eventFile));
+
                     continue;
                 }
 
@@ -128,14 +139,15 @@ class RunWorkerCommand extends Console\Command\Command
                 }
 
                 if (\is_array($configuration)) {
-                    \array_map(function (ScheduleEventInterface $event) use (&$events) {
+                    \array_map(static function (ScheduleEventInterface $event) use (&$events): void {
                         $events[] = $event;
-                    }, \array_filter($configuration, function ($event): bool {
+                    }, \array_filter($configuration, static function ($event): bool {
                         return $event instanceof ScheduleEventInterface;
                     }));
                 }
             } catch (\Exception $exception) {
                 $io->error(\sprintf('Unexpected error while load event file: %s', $exception->getMessage()));
+
                 continue;
             }
         }
