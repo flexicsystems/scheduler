@@ -14,6 +14,7 @@ namespace ThemePoint\Scheduler\Configuration;
 
 use ThemePoint\Scheduler\Constants\WorkerOptions;
 use ThemePoint\Scheduler\Worker;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class WorkerConfiguration extends Configuration
 {
@@ -23,6 +24,7 @@ final class WorkerConfiguration extends Configuration
 
     public function __construct(
         array $options = [],
+        readonly private ?SymfonyStyle $io = null,
     ) {
         $this->options = $this->resolve($options, [
             WorkerOptions::SCHEDULE_EVENT_LIMIT => null,
@@ -30,6 +32,11 @@ final class WorkerConfiguration extends Configuration
             WorkerOptions::MEMORY_LIMIT => null,
             WorkerOptions::INTERVAL_LIMIT => null,
         ]);
+    }
+
+    public function getIo(): ?SymfonyStyle
+    {
+        return $this->io;
     }
 
     public function setWorker(Worker $worker): void

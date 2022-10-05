@@ -27,6 +27,6 @@ final class WorkerStartListener implements EventSubscriberInterface
 
     public function onWorkerStart(WorkerEventInterface $event): void
     {
-        echo 'Start Worker' . \PHP_EOL;
+        $event->getWorkerConfiguration()->getIo()?->success('[ScheduleWorker] Starting worker');
     }
 }

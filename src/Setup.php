@@ -21,6 +21,7 @@ final class Setup
         EventDispatcherInterface $eventDispatcher,
     ): void {
         $eventDispatcher->addSubscriber(new Listener\WorkerStartListener());
+        $eventDispatcher->addSubscriber(new Listener\WorkerEventListener());
         $eventDispatcher->addSubscriber(new Listener\IntervalListener());
     }
 }

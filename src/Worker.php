@@ -38,6 +38,8 @@ final class Worker
         $this->configuration = $configuration;
         $this->shouldStop = false;
         $this->initializedScheduleEvent = InitializedScheduleEventFactory::initializeList($scheduleEvents);
+
+        $configuration->getIo()?->success(\sprintf('Initialized worker with %s schedule events.', \count($this->initializedScheduleEvent)));
         Setup::registerEventListener($this->eventDispatcher);
     }
 
