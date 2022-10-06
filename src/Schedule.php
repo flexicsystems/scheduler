@@ -46,6 +46,11 @@ final class Schedule implements ScheduleInterface
         return $this;
     }
 
+    public function getTimezone(): \DateTimeZone
+    {
+        return $this->timezone;
+    }
+
     public function getExpression(): Cron\CronExpression
     {
         return $this->cron;

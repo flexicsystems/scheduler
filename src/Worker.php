@@ -31,6 +31,8 @@ final class Worker
      */
     private readonly array $initializedScheduleEvent;
 
+    private string $defaultTimezone;
+
     public function __construct(
         WorkerConfiguration $configuration,
         array $scheduleEvents,
@@ -44,6 +46,7 @@ final class Worker
 
         $configuration->getIo()?->success(\sprintf('Initialized worker with %s schedule events.', \count($this->initializedScheduleEvent)));
         Setup::registerEventListener($this->eventDispatcher);
+        $this->defaultTimezone = \date_default_timezone_get();
     }
 
     public function run(): void
@@ -59,6 +62,8 @@ final class Worker
                 /** @var Schedule $schedule */
                 $schedule = $event->getSchedule();
 
+                \date_default_timezone_set($schedule->getTimezone()->getName());
+
                 if ($schedule->getExpression()->isDue()) {
                     $scheduleEvent = $event->getScheduleEvent();
 
@@ -66,6 +71,8 @@ final class Worker
 
                     $this->eventDispatcher->dispatch(new Event\WorkerRunningEvent($this->configuration, $scheduleEvent, $schedule, $interval));
                 }
+
+                \date_default_timezone_set($this->defaultTimezone);
             }
 
             $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));
