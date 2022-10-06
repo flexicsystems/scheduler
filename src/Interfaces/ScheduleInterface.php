@@ -15,4 +15,6 @@ namespace Flexic\Scheduler\Interfaces;
 interface ScheduleInterface
 {
     public function cron(string $expression): self;
+
+    public function timezone(string $timeZone): self;
 }
