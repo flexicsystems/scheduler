@@ -26,11 +26,11 @@ final class RunWorkerCommand extends Console\Command\Command
 
     private readonly EventDispatcher $eventDispatcher;
 
-    private array $scheduleEvents;
+    private iterable $scheduleEvents;
 
     public function __construct(
         ?EventDispatcher $eventDispatcher = null,
-        array $scheduleEvents = [],
+        iterable $scheduleEvents = [],
     ) {
         parent::__construct(self::COMMAND_NAME);
 
@@ -95,9 +95,12 @@ final class RunWorkerCommand extends Console\Command\Command
             WorkerOptions::MEMORY_LIMIT => $input->getOption(WorkerOptions::MEMORY_LIMIT),
         ], $io);
 
+        $scheduleEvents = [];
+        \array_push($scheduleEvents, ...$this->scheduleEvents);
+
         $worker = new Worker(
             $configuration,
-            $this->scheduleEvents,
+            $scheduleEvents,
             $this->eventDispatcher,
         );
 
