@@ -3,7 +3,6 @@
   "type": "library",
   "description": "Provides an scheduler extension.",
   "keywords": [
-    "symfony",
     "sheduler"
   ],
   "license": "MIT",
