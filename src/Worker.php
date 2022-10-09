@@ -24,6 +24,8 @@ final class Worker
 
     private readonly WorkerConfiguration $configuration;
 
+    private readonly Timer $timer;
+
     /**
      * @var array<int, InitializedScheduleEvent>
      */
@@ -38,6 +40,7 @@ final class Worker
         $this->configuration = $configuration;
         $this->shouldStop = false;
         $this->initializedScheduleEvent = InitializedScheduleEventFactory::initializeList($scheduleEvents);
+        $this->timer = new Timer();
 
         $configuration->getIo()?->success(\sprintf('Initialized worker with %s schedule events.', \count($this->initializedScheduleEvent)));
         Setup::registerEventListener($this->eventDispatcher);
@@ -68,7 +71,7 @@ final class Worker
             $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));
 
             ++$interval;
-            \sleep(60);
+            $this->timer->waitForNextTick();
         }
     }
 
