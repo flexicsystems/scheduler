@@ -30,7 +30,7 @@ final class RunWorkerCommand extends Console\Command\Command
 
     public function __construct(
         ?EventDispatcher $eventDispatcher = null,
-        array $scheduleEvents = [],
+        iterable $scheduleEvents = [],
     ) {
         parent::__construct(self::COMMAND_NAME);
 
