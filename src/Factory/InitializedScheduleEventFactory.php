@@ -18,14 +18,14 @@ use Flexic\Scheduler\Schedule;
 
 final class InitializedScheduleEventFactory
 {
-    public static function initializeList(array $scheduleEvents): array
+    public static function initialize(array $scheduleEvents): array
     {
         return \array_map(static function (ScheduleEventInterface $scheduleEvent) {
-            return self::initialize($scheduleEvent);
+            return self::initializeEvent($scheduleEvent);
         }, $scheduleEvents);
     }
 
-    public static function initialize(
+    public static function initializeEvent(
         ScheduleEventInterface $scheduleEvent,
     ): InitializedScheduleEvent {
         $schedule = new Schedule();

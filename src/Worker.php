@@ -44,7 +44,7 @@ final class Worker
         $configuration->setWorker($this);
         $this->configuration = $configuration;
         $this->shouldStop = false;
-        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initializeList($scheduleEvents);
+        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize($scheduleEvents);
         $this->timer = new Timer();
         $this->timezone = new Timezone();
 
