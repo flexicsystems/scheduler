@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace ThemePoint\Scheduler;
+namespace Flexic\Scheduler;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use ThemePoint\Scheduler\Event\Listener;
+use Flexic\Scheduler\Event\Listener;
 
 final class Setup
 {

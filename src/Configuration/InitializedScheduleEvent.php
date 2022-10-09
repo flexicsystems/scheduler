@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace ThemePoint\Scheduler\Configuration;
+namespace Flexic\Scheduler\Configuration;
 
-use ThemePoint\Scheduler\Interfaces\ScheduleEventInterface;
-use ThemePoint\Scheduler\Interfaces\ScheduleInterface;
+use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
+use Flexic\Scheduler\Interfaces\ScheduleInterface;
 
 final class InitializedScheduleEvent
 {

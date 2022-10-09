@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace ThemePoint\Scheduler\Event\Listener;
+namespace Flexic\Scheduler\Event\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use ThemePoint\Scheduler\Event\Event\WorkerStartEvent;
+use Flexic\Scheduler\Event\Event\WorkerStartEvent;
 
 final class WorkerStartListener implements EventSubscriberInterface
 {
