@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace Flexic\Scheduler;
 
 use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
+use Flexic\Scheduler\Configuration\Setup;
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
+use Flexic\Scheduler\DateTime\Timer;
 use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Factory\InitializedScheduleEventFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
