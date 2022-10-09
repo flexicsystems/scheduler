@@ -10,11 +10,11 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace ThemePoint\Scheduler;
+namespace Flexic\Scheduler;
 
 use Cron;
-use ThemePoint\Scheduler\Factory\CronExpressionFactory;
-use ThemePoint\Scheduler\Interfaces\ScheduleInterface;
+use Flexic\Scheduler\Factory\CronExpressionFactory;
+use Flexic\Scheduler\Interfaces\ScheduleInterface;
 
 final class Schedule implements ScheduleInterface
 {

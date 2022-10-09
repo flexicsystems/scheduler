@@ -10,11 +10,11 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace ThemePoint\Scheduler\Event\Event;
+namespace Flexic\Scheduler\Event\Event;
 
-use ThemePoint\Scheduler\Configuration\WorkerConfiguration;
-use ThemePoint\Scheduler\Interfaces\ScheduleEventInterface;
-use ThemePoint\Scheduler\Schedule;
+use Flexic\Scheduler\Configuration\WorkerConfiguration;
+use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
+use Flexic\Scheduler\Schedule;
 
 final class WorkerRunningEvent implements WorkerEventInterface
 {

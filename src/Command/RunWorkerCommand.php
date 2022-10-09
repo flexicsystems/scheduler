@@ -10,15 +10,15 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace ThemePoint\Scheduler\Command;
+namespace Flexic\Scheduler\Command;
 
 use Symfony\Component\Console;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use ThemePoint\Scheduler\Configuration\WorkerConfiguration;
-use ThemePoint\Scheduler\Constants\WorkerOptions;
-use ThemePoint\Scheduler\Interfaces\ScheduleEventInterface;
-use ThemePoint\Scheduler\Worker;
+use Flexic\Scheduler\Configuration\WorkerConfiguration;
+use Flexic\Scheduler\Constants\WorkerOptions;
+use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
+use Flexic\Scheduler\Worker;
 
 final class RunWorkerCommand extends Console\Command\Command
 {

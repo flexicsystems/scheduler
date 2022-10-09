@@ -10,8 +10,8 @@ require_once dirname(__DIR__).'/vendor/autoload.php';
 return (function () {
     $app = new \Symfony\Component\Console\Application();
 
-    $app->add(new \ThemePoint\Scheduler\Command\RunWorkerCommand());
-    $app->setDefaultCommand(\ThemePoint\Scheduler\Command\RunWorkerCommand::COMMAND_NAME, true);
+    $app->add(new \Flexic\Scheduler\Command\RunWorkerCommand());
+    $app->setDefaultCommand(\Flexic\Scheduler\Command\RunWorkerCommand::COMMAND_NAME, true);
 
     return $app->run();
 })();

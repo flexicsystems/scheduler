@@ -10,12 +10,12 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace ThemePoint\Scheduler\Event\Listener;
+namespace Flexic\Scheduler\Event\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use ThemePoint\Scheduler\Constants\WorkerOptions;
-use ThemePoint\Scheduler\Event\Event\WorkerIntervalEndEvent;
-use ThemePoint\Scheduler\Event\Event\WorkerIntervalStartEvent;
+use Flexic\Scheduler\Constants\WorkerOptions;
+use Flexic\Scheduler\Event\Event\WorkerIntervalEndEvent;
+use Flexic\Scheduler\Event\Event\WorkerIntervalStartEvent;
 
 final class IntervalListener implements EventSubscriberInterface
 {

@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace ThemePoint\Scheduler\Interfaces;
+namespace Flexic\Scheduler\Interfaces;
 
 interface ScheduleEventInterface
 {

@@ -10,11 +10,11 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace ThemePoint\Scheduler\Configuration;
+namespace Flexic\Scheduler\Configuration;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
-use ThemePoint\Scheduler\Constants\WorkerOptions;
-use ThemePoint\Scheduler\Worker;
+use Flexic\Scheduler\Constants\WorkerOptions;
+use Flexic\Scheduler\Worker;
 
 final class WorkerConfiguration extends Configuration
 {

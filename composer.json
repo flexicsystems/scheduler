@@ -1,5 +1,5 @@
 {
-  "name": "themepoint/scheduler",
+  "name": "flexic/scheduler",
   "type": "library",
   "description": "Provides an scheduler extension.",
   "keywords": [
@@ -31,7 +31,7 @@
   },
   "autoload": {
     "psr-4": {
-      "ThemePoint\\Scheduler\\": "src/"
+      "Flexic\\Scheduler\\": "src/"
     }
   },
   "require-dev": {

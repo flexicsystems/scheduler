@@ -19,14 +19,14 @@ to install `themepoint/scheduler`.
 ### Setup Events to schedule
 
 ```php
-class MyScheduleEvent implements \ThemePoint\Scheduler\Interfaces\ScheduleEventInterface
+class MyScheduleEvent implements \Flexic\Scheduler\Interfaces\ScheduleEventInterface
 {
     public function __invoke(): void
     {
         // ... do something
     }
     
-    public function configure(ThemePoint\Scheduler\Interfaces\ScheduleInterface $schedule): void
+    public function configure(Flexic\Scheduler\Interfaces\ScheduleInterface $schedule): void
     {
         $schedule->cron('* * * * *');
     }
@@ -62,8 +62,8 @@ $events = [
     new MyScheduleEvent(),
 ];
 
-$worker = new \ThemePoint\Scheduler\Worker(
-    new ThemePoint\Scheduler\Configuration\WorkerConfiguration($options),
+$worker = new \Flexic\Scheduler\Worker(
+    new Flexic\Scheduler\Configuration\WorkerConfiguration($options),
     $events,
     new \Symfony\Component\EventDispatcher\EventDispatcher(),
 );
