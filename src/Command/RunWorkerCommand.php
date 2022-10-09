@@ -116,6 +116,7 @@ final class RunWorkerCommand extends Console\Command\Command
         if (\count($scheduleEvents) <= 0) {
             $scheduleEvents = [];
             \array_push($scheduleEvents, ...$this->scheduleEvents);
+
             if (\count($scheduleEvents) <= 0) {
                 $io->error('No schedule events found.');
 
