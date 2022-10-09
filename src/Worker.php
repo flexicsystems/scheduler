@@ -13,7 +13,10 @@ declare(strict_types=1);
 namespace Flexic\Scheduler;
 
 use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
+use Flexic\Scheduler\Configuration\Setup;
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
+use Flexic\Scheduler\DateTime\Timer;
+use Flexic\Scheduler\DateTime\Timezone;
 use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Factory\InitializedScheduleEventFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,6 +34,8 @@ final class Worker
      */
     private readonly array $initializedScheduleEvent;
 
+    private Timezone $timezone;
+
     public function __construct(
         WorkerConfiguration $configuration,
         array $scheduleEvents,
@@ -39,8 +44,9 @@ final class Worker
         $configuration->setWorker($this);
         $this->configuration = $configuration;
         $this->shouldStop = false;
-        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initializeList($scheduleEvents);
+        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize($scheduleEvents);
         $this->timer = new Timer();
+        $this->timezone = new Timezone();
 
         $configuration->getIo()?->success(\sprintf('Initialized worker with %s schedule events.', \count($this->initializedScheduleEvent)));
         Setup::registerEventListener($this->eventDispatcher);
@@ -59,6 +65,8 @@ final class Worker
                 /** @var Schedule $schedule */
                 $schedule = $event->getSchedule();
 
+                $this->timezone->set($schedule->getTimezone());
+
                 if ($schedule->getExpression()->isDue()) {
                     $scheduleEvent = $event->getScheduleEvent();
 
@@ -66,6 +74,8 @@ final class Worker
 
                     $this->eventDispatcher->dispatch(new Event\WorkerRunningEvent($this->configuration, $scheduleEvent, $schedule, $interval));
                 }
+
+                $this->timezone->default();
             }
 
             $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));

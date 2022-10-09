@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace Flexic\Scheduler;
+namespace Flexic\Scheduler\DateTime;
 
 final class Timer
 {
