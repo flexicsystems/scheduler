@@ -10,10 +10,10 @@ It is inspired by the [Laravel Scheduler](https://laravel.com/docs/scheduling) a
 Run
 
 ```bash
-composer require themepoint/scheduler
+composer require flexic/scheduler
 ```
 
-to install `themepoint/scheduler`.
+to install `flexic/scheduler`.
 
 ----
 ### Setup Events to schedule

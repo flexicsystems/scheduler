@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022-2022 ThemePoint
+ * Copyright (c) 2022-2022 Flexic-Systems
  *
  * @author Hendrik Legge <hendrik.legge@themepoint.de>
  *
@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Configuration;
 
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Flexic\Scheduler\Constants\WorkerOptions;
 use Flexic\Scheduler\Worker;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class WorkerConfiguration extends Configuration
 {

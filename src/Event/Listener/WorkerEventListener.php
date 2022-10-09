@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022-2022 ThemePoint
+ * Copyright (c) 2022-2022 Flexic-Systems
  *
  * @author Hendrik Legge <hendrik.legge@themepoint.de>
  *
@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Event\Listener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Flexic\Scheduler\Constants\WorkerOptions;
 use Flexic\Scheduler\Event\Event\WorkerRunningEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class WorkerEventListener implements EventSubscriberInterface
 {

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022-2022 ThemePoint
+ * Copyright (c) 2022-2022 Flexic-Systems
  *
  * @author Hendrik Legge <hendrik.legge@themepoint.de>
  *
@@ -12,13 +12,13 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Command;
 
-use Symfony\Component\Console;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
 use Flexic\Scheduler\Constants\WorkerOptions;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 use Flexic\Scheduler\Worker;
+use Symfony\Component\Console;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 final class RunWorkerCommand extends Console\Command\Command
 {

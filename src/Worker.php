@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022-2022 ThemePoint
+ * Copyright (c) 2022-2022 Flexic-Systems
  *
  * @author Hendrik Legge <hendrik.legge@themepoint.de>
  *
@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
 use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Factory\InitializedScheduleEventFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Worker
 {
