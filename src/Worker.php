@@ -46,10 +46,10 @@ final class Worker
         $this->shouldStop = false;
         $this->initializedScheduleEvent = InitializedScheduleEventFactory::initializeList($scheduleEvents);
         $this->timer = new Timer();
+        $this->timezone = new Timezone();
 
         $configuration->getIo()?->success(\sprintf('Initialized worker with %s schedule events.', \count($this->initializedScheduleEvent)));
         Setup::registerEventListener($this->eventDispatcher);
-        $this->timezone = new Timezone();
     }
 
     public function run(): void
