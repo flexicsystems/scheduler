@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace ThemePoint\Scheduler;
+namespace Flexic\Scheduler;
 
 final class Util
 {
