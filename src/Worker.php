@@ -69,7 +69,7 @@ final class Worker extends BaseWorker
         \trigger_deprecation(
             'flexic/scheduler',
             '1.0.2',
-            'Using "run"() method directly is deprecated, use "%s" method instead.',
+            'Using "%s" method directly is deprecated, use "%s" method instead.',
             'run()',
             'start()',
         );
