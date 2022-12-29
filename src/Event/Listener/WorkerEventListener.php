@@ -48,7 +48,7 @@ final class WorkerEventListener implements EventSubscriberInterface, LoggerAware
 
         ++$this->handledEvents;
 
-        $eventLimit = $event->getWorkerConfiguration()->options[WorkerOptions::SCHEDULE_EVENT_LIMIT];
+        $eventLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::SCHEDULE_EVENT_LIMIT);
 
         if (null !== $eventLimit && $eventLimit > $this->handledEvents) {
             $event->getWorkerConfiguration()->getWorker()->stop();
