@@ -23,5 +23,6 @@ final class Setup
         $eventDispatcher->addSubscriber(new Listener\WorkerEventListener());
         $eventDispatcher->addSubscriber(new Listener\IntervalListener());
         $eventDispatcher->addSubscriber(new Listener\WorkerLifecycleListener());
+        $eventDispatcher->addSubscriber(new Listener\WorkerExecutionListener());
     }
 }
