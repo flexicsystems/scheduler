@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Flexic\Scheduler\Factory;
 
 use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
+use Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 use Flexic\Scheduler\Interfaces\ScheduleWorkerControllable;
 use Flexic\Scheduler\Schedule;
@@ -24,13 +25,31 @@ final class InitializedScheduleEventFactory
         array $scheduleEvents,
         Worker $worker,
     ): array {
-        return \array_map(static function (ScheduleEventInterface $scheduleEvent) use ($worker): InitializedScheduleEvent {
-            if ($scheduleEvent instanceof ScheduleWorkerControllable) {
-                $scheduleEvent->setWorker($worker);
+        $events = [];
+
+        foreach ($scheduleEvents as $scheduleEvent) {
+            if ($scheduleEvent instanceof ScheduleEventInterface) {
+                if ($scheduleEvent instanceof ScheduleWorkerControllable) {
+                    $scheduleEvent->setWorker($worker);
+                }
+
+                $events[] = self::initializeEvent($scheduleEvent);
+
+                continue;
             }
 
-            return self::initializeEvent($scheduleEvent);
-        }, $scheduleEvents);
+            if ($scheduleEvent instanceof ScheduleEventFactoryInterface) {
+                foreach ($scheduleEvent->create() as $factorizedScheduleEvent) {
+                    if ($factorizedScheduleEvent instanceof ScheduleWorkerControllable) {
+                        $factorizedScheduleEvent->setWorker($worker);
+                    }
+
+                    $events[] = self::initializeEvent($factorizedScheduleEvent);
+                }
+            }
+        }
+
+        return $events;
     }
 
     public static function initializeEvent(

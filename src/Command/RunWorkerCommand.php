@@ -14,6 +14,7 @@ namespace Flexic\Scheduler\Command;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
 use Flexic\Scheduler\Constants\WorkerOptions;
+use Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 use Flexic\Scheduler\Worker;
 use Symfony\Component\Console;
@@ -151,15 +152,15 @@ final class RunWorkerCommand extends Console\Command\Command
 
                 $configuration = require_once $path;
 
-                if ($configuration instanceof ScheduleEventInterface) {
+                if ($configuration instanceof ScheduleEventInterface || $configuration instanceof ScheduleEventFactoryInterface) {
                     $events[] = $configuration;
                 }
 
                 if (\is_array($configuration)) {
-                    \array_map(static function (ScheduleEventInterface $event) use (&$events): void {
+                    \array_map(static function (ScheduleEventInterface|ScheduleEventFactoryInterface $event) use (&$events): void {
                         $events[] = $event;
                     }, \array_filter($configuration, static function ($event): bool {
-                        return $event instanceof ScheduleEventInterface;
+                        return $event instanceof ScheduleEventInterface || $event instanceof ScheduleEventFactoryInterface;
                     }));
                 }
             } catch (\Exception $exception) {

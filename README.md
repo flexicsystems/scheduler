@@ -104,6 +104,21 @@ $worker->start();
 | WorkerExecuteParallelStartEvent  | Executed everytime an event is executed parallel.         |
 | WorkerExecuteParallelResumeEvent | Executed everytime an parallel executed event is resumed. |
 
+### ScheduleEvent Factory
+The `ScheduleEventInterface` is implemented to allow the usage of a factory to create the event. This is useful if you want to use a dependency injection container to create the event.
+
+```php
+class MyScheduleEventFactory implements \Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface
+{
+    public function create(): array {
+        return [
+            new MyScheduleEvent('foo'),
+            new MyScheduleEvent('bar'),
+        ];
+    }
+}
+```
+
 ----
 ### License
 This package is licensed using the GNU License.
