@@ -21,9 +21,9 @@ use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Factory\InitializedScheduleEventFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class Worker
+final class Worker extends BaseWorker
 {
-    private bool $shouldStop = false;
+    private bool $shouldStop;
 
     private readonly WorkerConfiguration $configuration;
 
@@ -38,24 +38,99 @@ final class Worker
 
     public function __construct(
         WorkerConfiguration $configuration,
-        array $scheduleEvents,
+        readonly private array $scheduleEvents,
         readonly private EventDispatcherInterface $eventDispatcher,
+        private bool $initialStarted = false,
     ) {
         $configuration->setWorker($this);
         $this->configuration = $configuration;
         $this->shouldStop = false;
-        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize($scheduleEvents);
+        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize(
+            $this->scheduleEvents,
+            $this,
+        );
         $this->timer = new Timer();
         $this->timezone = new Timezone();
-
-        $configuration->getIo()?->success(\sprintf('Initialized worker with %s schedule events.', \count($this->initializedScheduleEvent)));
         Setup::registerEventListener($this->eventDispatcher);
+
+        $this->eventDispatcher->dispatch(
+            new Event\WorkerInitializedEvent(
+                $this->configuration,
+                $this->initializedScheduleEvent,
+            ),
+        );
     }
 
+    /**
+     * @deprecated Using run() method directly is deprecated and will be removed in v1.1.0. Use start() method instead.
+     */
     public function run(): void
     {
-        $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
+        \trigger_deprecation(
+            'flexic/scheduler',
+            '1.0.2',
+            'Using "run"() method directly is deprecated, use "%s" method instead.',
+            'run()',
+            'start()',
+        );
 
+        $this->start();
+    }
+
+    public function start(): void
+    {
+        if ($this->initialStarted) {
+            $this->timer->waitForNextTick();
+        }
+
+        $this->initialStarted = true;
+
+        $this->shouldStop = false;
+
+        $this->execute();
+
+        $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
+    }
+
+    public function stop(): void
+    {
+        $this->shouldStop = true;
+
+        $this->eventDispatcher->dispatch(new Event\WorkerStopEvent($this->configuration));
+    }
+
+    public function restart(): void
+    {
+        $this->shouldStop = true;
+
+        $worker = new $this(
+            $this->configuration,
+            $this->scheduleEvents,
+            $this->eventDispatcher,
+        );
+
+        (new \ReflectionClass($this))->getMethod('execute')->invoke($worker);
+    }
+
+    public function update(
+        ?WorkerConfiguration $configuration,
+        ?array $scheduleEvents,
+    ): self {
+        $this->stop();
+
+        $worker = new $this(
+            $configuration ?? $this->configuration,
+            $scheduleEvents ?? $this->scheduleEvents,
+            $this->eventDispatcher,
+        );
+
+        $this->eventDispatcher->dispatch(new Event\WorkerUpdateEvent($this->configuration));
+
+        return $worker;
+    }
+
+    private function execute(): void
+    {
         $interval = 1;
 
         while (!$this->shouldStop) {
@@ -81,12 +156,12 @@ final class Worker
             $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));
 
             ++$interval;
+
+            if ($this->shouldStop) { // @phpstan-ignore-line Check before sleep to prevent longer run than required.
+                return;
+            }
+
             $this->timer->waitForNextTick();
         }
-    }
-
-    public function stop(): void
-    {
-        $this->shouldStop = true;
     }
 }

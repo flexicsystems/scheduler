@@ -14,10 +14,14 @@ namespace Flexic\Scheduler\Event\Listener;
 
 use Flexic\Scheduler\Constants\WorkerOptions;
 use Flexic\Scheduler\Event\Event\WorkerRunningEvent;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class WorkerEventListener implements EventSubscriberInterface
+final class WorkerEventListener implements EventSubscriberInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     private int $handledEvents;
 
     public function __construct()
@@ -34,9 +38,9 @@ final class WorkerEventListener implements EventSubscriberInterface
 
     public function onWorkerRun(WorkerRunningEvent $event): void
     {
-        $event->getWorkerConfiguration()->getIo()?->success(
+        $event->getWorkerConfiguration()->getLogger()->success(
             \sprintf(
-                '[ScheduleWorker] Handle event "%s". Next run: "%s"',
+                'Handle event "%s". Next run: "%s"',
                 $event->getScheduleEvent()::class,
                 $event->getSchedule()->getExpression()->getNextRunDate()->format('Y-m-d H:i:s'),
             ),

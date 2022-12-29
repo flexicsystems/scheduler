@@ -20,8 +20,8 @@ final class Setup
     public static function registerEventListener(
         EventDispatcherInterface $eventDispatcher,
     ): void {
-        $eventDispatcher->addSubscriber(new Listener\WorkerStartListener());
         $eventDispatcher->addSubscriber(new Listener\WorkerEventListener());
         $eventDispatcher->addSubscriber(new Listener\IntervalListener());
+        $eventDispatcher->addSubscriber(new Listener\WorkerLifecycleListener());
     }
 }

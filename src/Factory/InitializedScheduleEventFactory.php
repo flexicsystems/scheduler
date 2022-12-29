@@ -14,13 +14,21 @@ namespace Flexic\Scheduler\Factory;
 
 use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
+use Flexic\Scheduler\Interfaces\ScheduleWorkerControllable;
 use Flexic\Scheduler\Schedule;
+use Flexic\Scheduler\Worker;
 
 final class InitializedScheduleEventFactory
 {
-    public static function initialize(array $scheduleEvents): array
-    {
-        return \array_map(static function (ScheduleEventInterface $scheduleEvent) {
+    public static function initialize(
+        array $scheduleEvents,
+        Worker $worker,
+    ): array {
+        return \array_map(static function (ScheduleEventInterface $scheduleEvent) use ($worker): InitializedScheduleEvent {
+            if ($scheduleEvent instanceof ScheduleWorkerControllable) {
+                $scheduleEvent->setWorker($worker);
+            }
+
             return self::initializeEvent($scheduleEvent);
         }, $scheduleEvents);
     }

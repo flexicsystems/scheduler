@@ -68,8 +68,30 @@ $worker = new \Flexic\Scheduler\Worker(
     new \Symfony\Component\EventDispatcher\EventDispatcher(),
 );
 
-$worker->run();
+$worker->start();
 ```
+
+### Worker API
+| Method    |                     Description                      |
+|-----------|:----------------------------------------------------:|
+| start()   |                  Starts the worker.                  |
+| stop()    |                  Stops the worker.                   |
+| restart() |        Reinitialize and restarts the worker.         |
+| update()  | Update the worker and starts with new configuration. |
+
+### Worker Lifecycle Events
+| Event Name               | Description                                |
+|--------------------------|--------------------------------------------|
+| WorkerInitializedEvent   | Executed when worker is initialized.       |
+| WorkerStartEvent         | Executed when worker is started.           |
+| WorkerStopEvent          | Executed when worker is stopped.           |
+| WorkerRestartEvent       | Executed when worker is restarted.         |
+| WorkerRunningEvent       | Executed everytime an event is processed.  |
+| WorkerUpdateEvent        | Executed everytime the worker is updated.  |
+| WorkerIntervalStartEvent | Executed everytime a interval is started.  |
+| WorkerIntervalEndEvent   | Executed everytime a interval is finished. |
+All events are located in namespace `Flexic\Scheduler\Event\Event\<EventName>`
+
 
 ----
 ### License

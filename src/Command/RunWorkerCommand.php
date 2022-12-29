@@ -88,12 +88,15 @@ final class RunWorkerCommand extends Console\Command\Command
             $io,
         );
 
-        $configuration = new WorkerConfiguration([
-            WorkerOptions::SCHEDULE_EVENT_LIMIT => $input->getOption(WorkerOptions::SCHEDULE_EVENT_LIMIT),
-            WorkerOptions::INTERVAL_LIMIT => $input->getOption(WorkerOptions::INTERVAL_LIMIT),
-            WorkerOptions::TIME_LIMIT => $input->getOption(WorkerOptions::TIME_LIMIT),
-            WorkerOptions::MEMORY_LIMIT => $input->getOption(WorkerOptions::MEMORY_LIMIT),
-        ], $io);
+        $configuration = new WorkerConfiguration(
+            [
+                WorkerOptions::SCHEDULE_EVENT_LIMIT => $input->getOption(WorkerOptions::SCHEDULE_EVENT_LIMIT),
+                WorkerOptions::INTERVAL_LIMIT => $input->getOption(WorkerOptions::INTERVAL_LIMIT),
+                WorkerOptions::TIME_LIMIT => $input->getOption(WorkerOptions::TIME_LIMIT),
+                WorkerOptions::MEMORY_LIMIT => $input->getOption(WorkerOptions::MEMORY_LIMIT),
+            ],
+            $io,
+        );
 
         $scheduleEvents = [];
         \array_push($scheduleEvents, ...$this->scheduleEvents);
@@ -104,7 +107,7 @@ final class RunWorkerCommand extends Console\Command\Command
             $this->eventDispatcher,
         );
 
-        $worker->run();
+        $worker->start();
 
         return Console\Command\Command::SUCCESS;
     }
