@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Worker
 {
-    private bool $shouldStop = false;
+    private bool $shouldStop;
 
     private readonly WorkerConfiguration $configuration;
 
