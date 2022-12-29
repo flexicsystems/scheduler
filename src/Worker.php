@@ -126,7 +126,7 @@ final class Worker extends BaseWorker
         $interval = 1;
 
         while (!$this->shouldStop) {
-            $this->eventDispatcher->dispatch(new Event\WorkerIntervalStartEvent($this->configuration, $interval));
+            $this->eventDispatcher->dispatch(new Event\Interval\WorkerIntervalStartEvent($this->configuration, $interval));
 
             foreach ($this->initializedScheduleEvent as $event) {
                 /** @var Schedule $schedule */
@@ -151,7 +151,7 @@ final class Worker extends BaseWorker
 
             $this->eventDispatcher->dispatch(new Event\Execute\WorkerExecuteParallelResumeEvent());
 
-            $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));
+            $this->eventDispatcher->dispatch(new Event\Interval\WorkerIntervalEndEvent($this->configuration, $interval));
 
             ++$interval;
             $this->timer->waitForNextTick();

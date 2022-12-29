@@ -10,9 +10,10 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace Flexic\Scheduler\Event\Event;
+namespace Flexic\Scheduler\Event\Event\Interval;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
+use Flexic\Scheduler\Event\Event\WorkerEventInterface;
 
 final class WorkerIntervalStartEvent implements WorkerEventInterface
 {

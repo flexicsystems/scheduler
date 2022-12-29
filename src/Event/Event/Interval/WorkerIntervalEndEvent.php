@@ -10,18 +10,15 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace Flexic\Scheduler\Event\Event;
+namespace Flexic\Scheduler\Event\Event\Interval;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
-use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
-use Flexic\Scheduler\Schedule;
+use Flexic\Scheduler\Event\Event\WorkerEventInterface;
 
-final class WorkerRunEndEvent implements WorkerEventInterface
+final class WorkerIntervalEndEvent implements WorkerEventInterface
 {
     public function __construct(
         readonly private WorkerConfiguration $workerConfiguration,
-        readonly private ScheduleEventInterface $scheduleEvent,
-        readonly private Schedule $schedule,
         readonly private int $interval,
     ) {
     }
@@ -29,16 +26,6 @@ final class WorkerRunEndEvent implements WorkerEventInterface
     public function getWorkerConfiguration(): WorkerConfiguration
     {
         return $this->workerConfiguration;
-    }
-
-    public function getScheduleEvent(): ScheduleEventInterface
-    {
-        return $this->scheduleEvent;
-    }
-
-    public function getSchedule(): Schedule
-    {
-        return $this->schedule;
     }
 
     public function getInterval(): int
