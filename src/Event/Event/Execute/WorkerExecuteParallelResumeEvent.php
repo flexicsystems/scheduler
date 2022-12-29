@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Event\Event\Execute;
 
-use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
-
 final class WorkerExecuteParallelResumeEvent
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 }
