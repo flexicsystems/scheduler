@@ -116,6 +116,8 @@ final class RunWorkerCommand extends Console\Command\Command
                 WorkerOptions::TIME_LIMIT => $input->getOption(WorkerOptions::TIME_LIMIT),
                 WorkerOptions::MEMORY_LIMIT => $input->getOption(WorkerOptions::MEMORY_LIMIT),
                 WorkerOptions::PARALLEL_EXECUTION => $input->getOption(WorkerOptions::PARALLEL_EXECUTION),
+                WorkerOptions::ASYNCHRONOUS_EXECUTION => $input->getOption(WorkerOptions::ASYNCHRONOUS_EXECUTION),
+                WorkerOptions::ASYNCHRONOUS_EXECUTION_EXECUTABLE => $input->getOption(WorkerOptions::ASYNCHRONOUS_EXECUTION_EXECUTABLE),
             ],
             $io,
         );
