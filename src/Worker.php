@@ -40,11 +40,15 @@ final class Worker extends BaseWorker
         WorkerConfiguration $configuration,
         readonly private array $scheduleEvents,
         readonly private EventDispatcherInterface $eventDispatcher,
+        private bool $initialStarted = false,
     ) {
         $configuration->setWorker($this);
         $this->configuration = $configuration;
         $this->shouldStop = false;
-        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize($this->scheduleEvents);
+        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize(
+            $this->scheduleEvents,
+            $this
+        );
         $this->timer = new Timer();
         $this->timezone = new Timezone();
         Setup::registerEventListener($this->eventDispatcher);
@@ -75,6 +79,14 @@ final class Worker extends BaseWorker
 
     public function start(): void
     {
+        if ($this->initialStarted) {
+            $this->timer->waitForNextTick();
+        }
+
+        $this->initialStarted = true;
+
+        $this->shouldStop = false;
+
         $this->execute();
 
         $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
@@ -108,7 +120,7 @@ final class Worker extends BaseWorker
 
         $worker = new $this(
             $configuration ?? $this->configuration,
-            $scheduleEvents ?? $this->initializedScheduleEvent,
+            $scheduleEvents ?? $this->scheduleEvents,
             $this->eventDispatcher,
         );
 
@@ -122,6 +134,8 @@ final class Worker extends BaseWorker
         $interval = 1;
 
         while (!$this->shouldStop) {
+            var_dump($this->shouldStop);
+
             $this->eventDispatcher->dispatch(new Event\WorkerIntervalStartEvent($this->configuration, $interval));
 
             foreach ($this->initializedScheduleEvent as $event) {
@@ -144,6 +158,11 @@ final class Worker extends BaseWorker
             $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));
 
             ++$interval;
+
+            if ($this->shouldStop) {
+                return;
+            }
+
             $this->timer->waitForNextTick();
         }
     }
