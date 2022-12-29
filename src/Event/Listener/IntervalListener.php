@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Flexic\Scheduler\Event\Listener;
 
 use Flexic\Scheduler\Constants\WorkerOptions;
-use Flexic\Scheduler\Event\Event\WorkerIntervalEndEvent;
-use Flexic\Scheduler\Event\Event\WorkerIntervalStartEvent;
+use Flexic\Scheduler\Event\Event\Interval\WorkerIntervalEndEvent;
+use Flexic\Scheduler\Event\Event\Interval\WorkerIntervalStartEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -45,12 +45,13 @@ php bin/schedule ./path/to/event_config.php ./path/to/event_config_1.php
 to start the schedule worker. Worker will automatically load all events from the given config files and run them.
 
 #### Options
-| Option        |                                              Description                                               |    Format     |
-|---------------|:------------------------------------------------------------------------------------------------------:|:-------------:|
-| limit         | Limits the worker to the give number. Worker stops automatically if number if max Event runs exceeded. |      int      |
-| timeLimit     |                              Worker stops automatically after given time.                              | int (seconds) |
-| intervalLimit |                       Worker stops automatically after give amout of intervals.                        |      int      |
-| memoryLimit   |                 Worker stops automatically if usage of memory exceeds the given limit.                 |  int (bytes)  |
+| Option        |                                              Description                                               |    Format     | Default |
+|---------------|:------------------------------------------------------------------------------------------------------:|:-------------:|:-------:|
+| limit         | Limits the worker to the give number. Worker stops automatically if number if max Event runs exceeded. |      int      |    -    |
+| timeLimit     |                              Worker stops automatically after given time.                              | int (seconds) |    -    |
+| intervalLimit |                       Worker stops automatically after give amount of intervals.                       |      int      |    -    |
+| memoryLimit   |                 Worker stops automatically if usage of memory exceeds the given limit.                 |  int (bytes)  |    -    |
+| parallel      |                             Worker runs events in parallel if set to true.                             |    boolean    |  false  |
 
 
 ### Setup Schedule Worker (own script)
@@ -80,18 +81,28 @@ $worker->start();
 | update()  | Update the worker and starts with new configuration. |
 
 ### Worker Lifecycle Events
-| Event Name               | Description                                         |
-|--------------------------|-----------------------------------------------------|
-| WorkerInitializedEvent   | Executed when worker is initialized.                |
-| WorkerStartEvent         | Executed when worker is started.                    |
-| WorkerStopEvent          | Executed when worker is stopped.                    |
-| WorkerRestartEvent       | Executed when worker is restarted.                  |
-| WorkerRunStartEvent      | Executed everytime an event is started to process.  |
-| WorkerRunEnvEvent        | Executed everytime an event is finished to process. |
-| WorkerUpdateEvent        | Executed everytime the worker is updated.           |
-| WorkerIntervalStartEvent | Executed everytime a interval is started.           |
-| WorkerIntervalEndEvent   | Executed everytime a interval is finished.          |
-All events are located in namespace `Flexic\Scheduler\Event\Event\<EventName>`
+| Event Name                       | Description                                               |
+|----------------------------------|-----------------------------------------------------------|
+| **Worker Lifecycle**             | Flexic\Scheduler\Event\Event\Lifecycle\<EventName>        |
+| WorkerInitializedEvent           | Executed when worker is initialized.                      |
+| WorkerStartEvent                 | Executed when worker is started.                          |
+| WorkerStopEvent                  | Executed when worker is stopped.                          |
+| WorkerRestartEvent               | Executed when worker is restarted.                        |
+| WorkerUpdateEvent                | Executed everytime the worker is updated.                 |
+|                                  |
+| **Run Lifecycle**                | Flexic\Scheduler\Event\Event\Run\<EventName>              |
+| WorkerRunStartEvent              | Executed everytime an event is started to process.        |
+| WorkerRunEnvEvent                | Executed everytime an event is finished to process.       |
+|                                  |
+| **Interval Lifecycle**           | Flexic\Scheduler\Event\Event\Interval\<EventName>         |
+| WorkerIntervalStartEvent         | Executed everytime a interval is started.                 |
+| WorkerIntervalEndEvent           | Executed everytime a interval is finished.                |
+|                                  |
+| **Execution Lifecycle**          | Flexic\Scheduler\Event\Event\Execute\<EventName>          |
+| WorkerExecuteEvent               | Executed everytime an event is executed.                  |
+| WorkerExecuteSequentialEvent     | Executed everytime an event is executed sequentially.     |
+| WorkerExecuteParallelStartEvent  | Executed everytime an event is executed parallel.         |
+| WorkerExecuteParallelResumeEvent | Executed everytime an parallel executed event is resumed. |
 
 ----
 ### License

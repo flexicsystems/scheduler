@@ -45,7 +45,7 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
 
         $scheduleEvent = $event->getScheduleEvent();
 
-        $eventDispatcher->dispatch(new Event\WorkerRunStartEvent(
+        $eventDispatcher->dispatch(new Event\Run\WorkerRunStartEvent(
             $event->getWorkerConfiguration(),
             $scheduleEvent,
             $event->getSchedule(),
@@ -58,7 +58,7 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
             $eventDispatcher->dispatch(new Event\Execute\WorkerExecuteSequentialEvent($scheduleEvent));
         }
 
-        $eventDispatcher->dispatch(new Event\WorkerRunEndEvent(
+        $eventDispatcher->dispatch(new Event\Run\WorkerRunEndEvent(
             $event->getWorkerConfiguration(),
             $scheduleEvent,
             $event->getSchedule(),
