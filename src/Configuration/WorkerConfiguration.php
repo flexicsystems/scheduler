@@ -38,7 +38,7 @@ final class WorkerConfiguration extends Configuration
             WorkerOptions::INTERVAL_LIMIT => null,
             WorkerOptions::PARALLEL_EXECUTION => false,
             WorkerOptions::ASYNCHRONOUS_EXECUTION => false,
-            WorkerOptions::ASYNCHRONOUS_EXECUTION_EXECUTABLE => null,
+            WorkerOptions::ASYNCHRONOUS_EXECUTION_EXECUTABLE => \realpath($_SERVER['PHP_SELF']),
         ]);
 
         if ($this->getOption(WorkerOptions::ASYNCHRONOUS_EXECUTION) && $this->getOption(WorkerOptions::PARALLEL_EXECUTION)) {
