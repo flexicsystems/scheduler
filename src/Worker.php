@@ -47,9 +47,12 @@ final class Worker extends BaseWorker
         $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize($this->scheduleEvents);
         $this->timer = new Timer();
         $this->timezone = new Timezone();
-
-        $configuration->getLogger()->success(\sprintf('Initialized worker with %s schedule events.', \count($this->initializedScheduleEvent)));
         Setup::registerEventListener($this->eventDispatcher);
+
+        $this->eventDispatcher->dispatch(new Event\WorkerInitializedEvent(
+            $this->configuration,
+            $this->initializedScheduleEvent)
+        );
     }
 
     /**
@@ -57,8 +60,6 @@ final class Worker extends BaseWorker
      */
     public function run(): void
     {
-        $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
-
         $interval = 1;
 
         while (!$this->shouldStop) {
@@ -91,16 +92,20 @@ final class Worker extends BaseWorker
     public function start(): void
     {
         $this->run();
+
+        $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
     }
 
     public function stop(): void
     {
         $this->shouldStop = true;
+
+        $this->eventDispatcher->dispatch(new Event\WorkerStopEvent($this->configuration));
     }
 
     public function restart(): self
     {
-        $this->stop();
+        $this->shouldStop = true;
 
         $worker = new $this(
             $this->configuration,
@@ -108,7 +113,7 @@ final class Worker extends BaseWorker
             $this->eventDispatcher,
         );
 
-        $worker->start();
+        $worker->run();
 
         return $worker;
     }
