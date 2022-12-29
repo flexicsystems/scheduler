@@ -48,7 +48,7 @@ final class WorkerLifecycleListener implements EventSubscriberInterface, LoggerA
         $event->getWorkerConfiguration()->getLogger()->success('Starting worker');
     }
 
-    public function onWorkerStop(WorkerStartEvent $event): void
+    public function onWorkerStop(WorkerStopEvent $event): void
     {
         $event->getWorkerConfiguration()->getLogger()->success('Stopping worker');
     }

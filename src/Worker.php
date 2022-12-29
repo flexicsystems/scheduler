@@ -87,7 +87,7 @@ final class Worker extends BaseWorker
         $this->eventDispatcher->dispatch(new Event\WorkerStopEvent($this->configuration));
     }
 
-    public function restart(): self
+    public function restart(): void
     {
         $this->shouldStop = true;
 
@@ -98,8 +98,6 @@ final class Worker extends BaseWorker
         );
 
         (new \ReflectionClass($this))->getMethod('execute')->invoke($worker);
-
-        return $worker;
     }
 
     public function update(
@@ -113,8 +111,6 @@ final class Worker extends BaseWorker
             $scheduleEvents ?? $this->initializedScheduleEvent,
             $this->eventDispatcher,
         );
-
-        $worker->start();
 
         $this->eventDispatcher->dispatch(new Event\WorkerUpdateEvent($this->configuration));
 
