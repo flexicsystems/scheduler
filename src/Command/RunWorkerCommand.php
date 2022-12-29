@@ -27,14 +27,16 @@ final class RunWorkerCommand extends Console\Command\Command
     private readonly EventDispatcher $eventDispatcher;
 
     private iterable $scheduleEvents;
+    private bool $scheduleEventsInitialized;
 
     public function __construct(
         ?EventDispatcher $eventDispatcher = null,
-        iterable $scheduleEvents = [],
+        iterable $scheduleEvents = null,
     ) {
         parent::__construct(self::COMMAND_NAME);
 
-        $this->scheduleEvents = $scheduleEvents;
+        $this->scheduleEvents = $scheduleEvents ?? [];
+        $this->scheduleEventsInitialized = !(null === $scheduleEvents);
         $this->eventDispatcher = $eventDispatcher ?? new EventDispatcher();
     }
 
@@ -140,7 +142,7 @@ final class RunWorkerCommand extends Console\Command\Command
         array $scheduleEvents,
         SymfonyStyle $io,
     ): void {
-        if (\count($scheduleEvents) <= 0) {
+        if (!$this->scheduleEventsInitialized) {
             $scheduleEvents = [];
             \array_push($scheduleEvents, ...$this->scheduleEvents);
 
