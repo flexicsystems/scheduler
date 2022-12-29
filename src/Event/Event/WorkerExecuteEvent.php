@@ -14,7 +14,7 @@ namespace Flexic\Scheduler\Event\Event;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
-use Flexic\Scheduler\Interfaces\ScheduleInterface;
+use Flexic\Scheduler\Schedule;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class WorkerExecuteEvent implements WorkerEventInterface
@@ -23,7 +23,7 @@ final class WorkerExecuteEvent implements WorkerEventInterface
         readonly private WorkerConfiguration $workerConfiguration,
         readonly private EventDispatcherInterface $eventDispatcher,
         readonly private ScheduleEventInterface $scheduleEvent,
-        readonly private ScheduleInterface $schedule,
+        readonly private Schedule $schedule,
         readonly private int $interval,
     ) {
     }
@@ -43,7 +43,7 @@ final class WorkerExecuteEvent implements WorkerEventInterface
         return $this->scheduleEvent;
     }
 
-    public function getSchedule(): ScheduleInterface
+    public function getSchedule(): Schedule
     {
         return $this->schedule;
     }
