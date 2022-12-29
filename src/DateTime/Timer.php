@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\DateTime;
 
-use Flexic\Scheduler\Worker;
-
 final class Timer
 {
     private const NEXT_TICK = '+ 1 minute';

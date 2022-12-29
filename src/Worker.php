@@ -47,7 +47,7 @@ final class Worker extends BaseWorker
         $this->shouldStop = false;
         $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize(
             $this->scheduleEvents,
-            $this
+            $this,
         );
         $this->timer = new Timer();
         $this->timezone = new Timezone();
@@ -134,7 +134,7 @@ final class Worker extends BaseWorker
         $interval = 1;
 
         while (!$this->shouldStop) {
-            var_dump($this->shouldStop);
+            \var_dump($this->shouldStop);
 
             $this->eventDispatcher->dispatch(new Event\WorkerIntervalStartEvent($this->configuration, $interval));
 
