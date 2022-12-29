@@ -12,15 +12,16 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Event\Listener;
 
+use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Event\Event\WorkerExecuteEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Flexic\Scheduler\Event\Event;
 
 final class WorkerExecutionListener implements EventSubscriberInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
+
     public static function getSubscribedEvents()
     {
         return [
@@ -38,7 +39,7 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
             $event->getWorkerConfiguration(),
             $scheduleEvent,
             $event->getSchedule(),
-            $event->getInterval()
+            $event->getInterval(),
         ));
 
         $scheduleEvent(); // ToDo
@@ -47,7 +48,7 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
             $event->getWorkerConfiguration(),
             $scheduleEvent,
             $event->getSchedule(),
-            $event->getInterval()
+            $event->getInterval(),
         ));
     }
 }
