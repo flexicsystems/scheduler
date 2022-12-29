@@ -133,9 +133,11 @@ final class Worker extends BaseWorker
                 if ($schedule->getExpression()->isDue()) {
                     $scheduleEvent = $event->getScheduleEvent();
 
+                    $this->eventDispatcher->dispatch(new Event\WorkerRunStartEvent($this->configuration, $scheduleEvent, $schedule, $interval));
+
                     $scheduleEvent();
 
-                    $this->eventDispatcher->dispatch(new Event\WorkerRunningEvent($this->configuration, $scheduleEvent, $schedule, $interval));
+                    $this->eventDispatcher->dispatch(new Event\WorkerRunEndEvent($this->configuration, $scheduleEvent, $schedule, $interval));
                 }
 
                 $this->timezone->default();

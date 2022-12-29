@@ -16,7 +16,7 @@ use Flexic\Scheduler\Configuration\WorkerConfiguration;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 use Flexic\Scheduler\Schedule;
 
-final class WorkerRunningEvent implements WorkerEventInterface
+final class WorkerRunEndEvent implements WorkerEventInterface
 {
     public function __construct(
         readonly private WorkerConfiguration $workerConfiguration,
