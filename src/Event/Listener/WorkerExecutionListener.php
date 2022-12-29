@@ -39,7 +39,7 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
         ];
     }
 
-    public function onWorkerExecute(WorkerExecuteEvent $event): void
+    public function onWorkerExecute(Event\Execute\WorkerExecuteEvent $event): void
     {
         $eventDispatcher = $event->getEventDispatcher();
 
