@@ -38,13 +38,13 @@ final class Worker extends BaseWorker
 
     public function __construct(
         WorkerConfiguration $configuration,
-        array $scheduleEvents,
+        readonly private array $scheduleEvents,
         readonly private EventDispatcherInterface $eventDispatcher,
     ) {
         $configuration->setWorker($this);
         $this->configuration = $configuration;
         $this->shouldStop = false;
-        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize($scheduleEvents);
+        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize($this->scheduleEvents);
         $this->timer = new Timer();
         $this->timezone = new Timezone();
 
@@ -85,12 +85,31 @@ final class Worker extends BaseWorker
         }
     }
 
+    public function start(): void
+    {
+        $this->run();
+    }
+
     public function stop(): void
     {
         $this->shouldStop = true;
     }
 
-    public function restart(
+    public function restart(): self {
+        $this->stop();
+
+        $worker = new $this(
+            $this->configuration,
+            $this->scheduleEvents,
+            $this->eventDispatcher,
+        );
+
+        $worker->start();
+
+        return $worker;
+    }
+
+    public function update(
         ?WorkerConfiguration $configuration,
         ?array $scheduleEvents,
     ): self {
@@ -102,7 +121,7 @@ final class Worker extends BaseWorker
             $this->eventDispatcher,
         );
 
-        $worker->run();
+        $worker->start();
 
         return $worker;
     }

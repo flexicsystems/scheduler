@@ -104,7 +104,7 @@ final class RunWorkerCommand extends Console\Command\Command
             $this->eventDispatcher,
         );
 
-        $worker->run();
+        $worker->start();
 
         return Console\Command\Command::SUCCESS;
     }

@@ -68,8 +68,16 @@ $worker = new \Flexic\Scheduler\Worker(
     new \Symfony\Component\EventDispatcher\EventDispatcher(),
 );
 
-$worker->run();
+$worker->start();
 ```
+
+### Worker API
+| Method    |                     Description                      |
+|-----------|:----------------------------------------------------:|
+| start()   |                  Starts the worker.                  |
+| stop()    |                  Stops the worker.                   |
+| restart() |        Reinitialize and restarts the worker.         |
+| update()  | Update the worker and starts with new configuration. |
 
 ----
 ### License
