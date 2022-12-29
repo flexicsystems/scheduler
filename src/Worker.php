@@ -134,8 +134,6 @@ final class Worker extends BaseWorker
         $interval = 1;
 
         while (!$this->shouldStop) {
-            \var_dump($this->shouldStop);
-
             $this->eventDispatcher->dispatch(new Event\WorkerIntervalStartEvent($this->configuration, $interval));
 
             foreach ($this->initializedScheduleEvent as $event) {
