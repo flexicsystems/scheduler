@@ -49,9 +49,11 @@ final class Worker extends BaseWorker
         $this->timezone = new Timezone();
         Setup::registerEventListener($this->eventDispatcher);
 
-        $this->eventDispatcher->dispatch(new Event\WorkerInitializedEvent(
-            $this->configuration,
-            $this->initializedScheduleEvent)
+        $this->eventDispatcher->dispatch(
+            new Event\WorkerInitializedEvent(
+                $this->configuration,
+                $this->initializedScheduleEvent,
+            ),
         );
     }
 

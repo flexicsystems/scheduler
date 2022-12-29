@@ -37,7 +37,7 @@ final class WorkerLifecycleListener implements EventSubscriberInterface, LoggerA
     public function onWorkerRun(WorkerInitializedEvent $event): void
     {
         $event->getWorkerConfiguration()->getLogger()->success(
-            \sprintf('Initialized worker with %s schedule events.', \count($event->getScheduleEvents()))
+            \sprintf('Initialized worker with %s schedule events.', \count($event->getScheduleEvents())),
         );
     }
 
