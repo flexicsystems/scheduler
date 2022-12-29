@@ -65,37 +65,6 @@ final class Worker extends BaseWorker
         $this->start();
     }
 
-    private function execute(): void
-    {
-        $interval = 1;
-
-        while (!$this->shouldStop) {
-            $this->eventDispatcher->dispatch(new Event\WorkerIntervalStartEvent($this->configuration, $interval));
-
-            foreach ($this->initializedScheduleEvent as $event) {
-                /** @var Schedule $schedule */
-                $schedule = $event->getSchedule();
-
-                $this->timezone->set($schedule->getTimezone());
-
-                if ($schedule->getExpression()->isDue()) {
-                    $scheduleEvent = $event->getScheduleEvent();
-
-                    $scheduleEvent();
-
-                    $this->eventDispatcher->dispatch(new Event\WorkerRunningEvent($this->configuration, $scheduleEvent, $schedule, $interval));
-                }
-
-                $this->timezone->default();
-            }
-
-            $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));
-
-            ++$interval;
-            $this->timer->waitForNextTick();
-        }
-    }
-
     public function start(): void
     {
         $this->execute();
@@ -140,5 +109,36 @@ final class Worker extends BaseWorker
         $worker->start();
 
         return $worker;
+    }
+
+    private function execute(): void
+    {
+        $interval = 1;
+
+        while (!$this->shouldStop) {
+            $this->eventDispatcher->dispatch(new Event\WorkerIntervalStartEvent($this->configuration, $interval));
+
+            foreach ($this->initializedScheduleEvent as $event) {
+                /** @var Schedule $schedule */
+                $schedule = $event->getSchedule();
+
+                $this->timezone->set($schedule->getTimezone());
+
+                if ($schedule->getExpression()->isDue()) {
+                    $scheduleEvent = $event->getScheduleEvent();
+
+                    $scheduleEvent();
+
+                    $this->eventDispatcher->dispatch(new Event\WorkerRunningEvent($this->configuration, $scheduleEvent, $schedule, $interval));
+                }
+
+                $this->timezone->default();
+            }
+
+            $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));
+
+            ++$interval;
+            $this->timer->waitForNextTick();
+        }
     }
 }
