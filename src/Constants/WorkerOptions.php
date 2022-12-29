@@ -25,10 +25,10 @@ final class WorkerOptions
     public const PARALLEL_EXECUTION = 'parallel';
 
     public const DEFAULTS = [
-        WorkerOptions::SCHEDULE_EVENT_LIMIT => null,
-        WorkerOptions::TIME_LIMIT => null,
-        WorkerOptions::MEMORY_LIMIT => null,
-        WorkerOptions::INTERVAL_LIMIT => null,
-        WorkerOptions::PARALLEL_EXECUTION => false,
+        self::SCHEDULE_EVENT_LIMIT => null,
+        self::TIME_LIMIT => null,
+        self::MEMORY_LIMIT => null,
+        self::INTERVAL_LIMIT => null,
+        self::PARALLEL_EXECUTION => false,
     ];
 }
