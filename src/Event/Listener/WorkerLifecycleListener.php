@@ -17,19 +17,13 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class WorkerStartListener implements EventSubscriberInterface, LoggerAwareInterface
+final class WorkerLifecycleListener implements EventSubscriberInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     public static function getSubscribedEvents()
     {
         return [
-            WorkerStartEvent::class => 'onWorkerStart',
         ];
-    }
-
-    public function onWorkerStart(WorkerStartEvent $event): void
-    {
-        $event->getWorkerConfiguration()->getLogger()->success('[ScheduleWorker] Starting worker');
     }
 }

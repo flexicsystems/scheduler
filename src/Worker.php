@@ -19,6 +19,7 @@ use Flexic\Scheduler\DateTime\Timer;
 use Flexic\Scheduler\DateTime\Timezone;
 use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Factory\InitializedScheduleEventFactory;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Worker extends BaseWorker
@@ -48,7 +49,7 @@ final class Worker extends BaseWorker
         $this->timer = new Timer();
         $this->timezone = new Timezone();
 
-        $configuration->getIo()?->success(\sprintf('Initialized worker with %s schedule events.', \count($this->initializedScheduleEvent)));
+        $configuration->getLogger()->success(\sprintf('Initialized worker with %s schedule events.', \count($this->initializedScheduleEvent)));
         Setup::registerEventListener($this->eventDispatcher);
     }
 

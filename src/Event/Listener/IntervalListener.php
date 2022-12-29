@@ -15,10 +15,14 @@ namespace Flexic\Scheduler\Event\Listener;
 use Flexic\Scheduler\Constants\WorkerOptions;
 use Flexic\Scheduler\Event\Event\WorkerIntervalEndEvent;
 use Flexic\Scheduler\Event\Event\WorkerIntervalStartEvent;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class IntervalListener implements EventSubscriberInterface
+final class IntervalListener implements EventSubscriberInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     private int $startTime;
 
     public function __construct()
@@ -36,7 +40,7 @@ final class IntervalListener implements EventSubscriberInterface
 
     public function onWorkerIntervalStart(WorkerIntervalStartEvent $event): void
     {
-        $event->getWorkerConfiguration()->getIo()?->info(\sprintf('[ScheduleWorker] Interval %s started', $event->getInterval()));
+        $event->getWorkerConfiguration()->getLogger()->info(\sprintf('[ScheduleWorker] Interval %s started', $event->getInterval()));
 
         $memoryLimit = $event->getWorkerConfiguration()->options[WorkerOptions::MEMORY_LIMIT];
 
