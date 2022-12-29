@@ -159,7 +159,7 @@ final class Worker extends BaseWorker
 
             ++$interval;
 
-            if ($this->shouldStop) {
+            if ($this->shouldStop) { // @phpstan-ignore-line Check before sleep to prevent longer run than required.
                 return;
             }
 
