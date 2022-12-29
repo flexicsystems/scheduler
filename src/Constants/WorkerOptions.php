@@ -23,4 +23,12 @@ final class WorkerOptions
     public const MEMORY_LIMIT = 'memoryLimit';
 
     public const PARALLEL_EXECUTION = 'parallel';
+
+    public const DEFAULTS = [
+        WorkerOptions::SCHEDULE_EVENT_LIMIT => null,
+        WorkerOptions::TIME_LIMIT => null,
+        WorkerOptions::MEMORY_LIMIT => null,
+        WorkerOptions::INTERVAL_LIMIT => null,
+        WorkerOptions::PARALLEL_EXECUTION => false,
+    ];
 }

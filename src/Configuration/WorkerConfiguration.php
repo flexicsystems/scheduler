@@ -34,13 +34,7 @@ final class WorkerConfiguration
     ) {
         $resolver = new OptionsResolver();
 
-        $resolver->setDefaults([
-            WorkerOptions::SCHEDULE_EVENT_LIMIT => null,
-            WorkerOptions::TIME_LIMIT => null,
-            WorkerOptions::MEMORY_LIMIT => null,
-            WorkerOptions::INTERVAL_LIMIT => null,
-            WorkerOptions::PARALLEL_EXECUTION => false,
-        ]);
+        $resolver->setDefaults(WorkerOptions::DEFAULTS);
 
         $this->options = $resolver->resolve($options);
 
