@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Flexic\Scheduler;
 
 use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
-use Flexic\Scheduler\Configuration\Setup;
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
 use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Factory\InitializedScheduleEventFactory;
@@ -41,7 +40,7 @@ final class Worker extends BaseWorker
             $this,
         );
 
-        Setup::registerEventListener($this->eventDispatcher);
+        $this->setupEventSystem($this->eventDispatcher);
 
         $this->eventDispatcher->dispatch(
             new Event\Lifecycle\WorkerInitializedEvent(
