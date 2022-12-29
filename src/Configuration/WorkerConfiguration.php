@@ -37,7 +37,17 @@ final class WorkerConfiguration extends Configuration
             WorkerOptions::MEMORY_LIMIT => null,
             WorkerOptions::INTERVAL_LIMIT => null,
             WorkerOptions::PARALLEL_EXECUTION => false,
+            WorkerOptions::ASYNCHRONOUS_EXECUTION => false,
+            WorkerOptions::ASYNCHRONOUS_EXECUTION_EXECUTABLE => null,
         ]);
+
+        if ($this->getOption(WorkerOptions::ASYNCHRONOUS_EXECUTION) && $this->getOption(WorkerOptions::PARALLEL_EXECUTION)) {
+            throw new \RuntimeException('You can not use parallel execution and asynchronous execution at the same time.');
+        }
+
+        if ($this->getOption(WorkerOptions::ASYNCHRONOUS_EXECUTION) && (!\is_file((string) $this->getOption(WorkerOptions::ASYNCHRONOUS_EXECUTION_EXECUTABLE)) || !\is_executable((string) $this->getOption(WorkerOptions::ASYNCHRONOUS_EXECUTION_EXECUTABLE)))) {
+            throw new \RuntimeException('The asynchronous execution executable is not a file or not executable.');
+        }
 
         $this->logger = new WorkerLogger(
             $io,
