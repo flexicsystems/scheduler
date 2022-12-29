@@ -23,4 +23,8 @@ final class WorkerOptions
     public const MEMORY_LIMIT = 'memoryLimit';
 
     public const PARALLEL_EXECUTION = 'parallel';
+
+    public const ASYNCHRONOUS_EXECUTION = 'async';
+
+    public const ASYNCHRONOUS_EXECUTION_EXECUTABLE = 'asyncExecutable';
 }

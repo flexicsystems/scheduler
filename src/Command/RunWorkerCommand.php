@@ -76,6 +76,20 @@ final class RunWorkerCommand extends Console\Command\Command
             'Allow worker to run events parallel.',
             null,
         );
+        $this->addOption(
+            WorkerOptions::ASYNCHRONOUS_EXECUTION,
+            null,
+            Console\Input\InputOption::VALUE_NONE,
+            'Allow worker to run events asynchronous.',
+            null,
+        );
+        $this->addOption(
+            WorkerOptions::ASYNCHRONOUS_EXECUTION_EXECUTABLE,
+            null,
+            Console\Input\InputOption::VALUE_REQUIRED,
+            'The executable file to run events asynchronous.',
+            null,
+        );
         $this->addArgument(
             'schedule-event',
             Console\Input\InputArgument::IS_ARRAY,
