@@ -22,6 +22,13 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
 {
     use LoggerAwareTrait;
 
+    private array $parallelExecution;
+
+    public function __construct()
+    {
+        $this->parallelExecution = [];
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -30,13 +37,6 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
             Event\Execute\WorkerExecuteParallelStartEvent::class => 'onStartParallelExecution',
             Event\Execute\WorkerExecuteParallelResumeEvent::class => 'onResumeParallelExecution',
         ];
-    }
-
-    private array $parallelExecution;
-
-    public function __construct()
-    {
-        $this->parallelExecution = [];
     }
 
     public function onWorkerExecute(Event\Execute\WorkerExecuteEvent $event): void
@@ -77,7 +77,7 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
     {
         $scheduleEvent = $event->getScheduleEvent();
 
-        $fiber = new \Fiber(static function() use ($scheduleEvent) {
+        $fiber = new \Fiber(static function () use ($scheduleEvent): void {
             \Fiber::suspend();
 
             $scheduleEvent();

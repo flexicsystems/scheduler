@@ -18,7 +18,8 @@ final class WorkerExecuteSequentialEvent
 {
     public function __construct(
         readonly private ScheduleEventInterface $scheduleEvent,
-    ) {}
+    ) {
+    }
 
     public function getScheduleEvent(): ScheduleEventInterface
     {
