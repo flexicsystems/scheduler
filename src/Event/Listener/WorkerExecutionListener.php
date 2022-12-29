@@ -90,7 +90,6 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
 
     public function onResumeParallelExecution(): void
     {
-        /** @var \Fiber $fiber */
         foreach ($this->parallelExecution as $fiber) {
             if (!$fiber->isStarted()) {
                 throw new \RuntimeException('Parallel execution is not started.');
