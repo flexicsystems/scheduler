@@ -58,7 +58,7 @@ final class Worker extends BaseWorker
     }
 
     /**
-     * @deprecated Using run() method directly is deprecated. Use start() method instead.
+     * @deprecated Using run() method directly is deprecated and will be removed in v1.1.0. Use start() method instead.
      */
     public function run(): void
     {
