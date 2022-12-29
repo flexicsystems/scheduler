@@ -52,6 +52,7 @@ final class Worker extends BaseWorker
         Setup::registerEventListener($this->eventDispatcher);
     }
 
+    /** @deprecated Using run() method directly is deprecated. Use start() method instead. */
     public function run(): void
     {
         $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
