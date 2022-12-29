@@ -16,6 +16,7 @@ use Flexic\Scheduler\Event\Event\WorkerInitializedEvent;
 use Flexic\Scheduler\Event\Event\WorkerRestartEvent;
 use Flexic\Scheduler\Event\Event\WorkerStartEvent;
 use Flexic\Scheduler\Event\Event\WorkerStopEvent;
+use Flexic\Scheduler\Event\Event\WorkerUpdateEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -31,6 +32,7 @@ final class WorkerLifecycleListener implements EventSubscriberInterface, LoggerA
             WorkerStartEvent::class => 'onWorkerStart',
             WorkerStopEvent::class => 'onWorkerStop',
             WorkerRestartEvent::class => 'onWorkerRestart',
+            WorkerUpdateEvent::class => 'onWorkerUpdate',
         ];
     }
 
@@ -54,5 +56,10 @@ final class WorkerLifecycleListener implements EventSubscriberInterface, LoggerA
     public function onWorkerRestart(WorkerStartEvent $event): void
     {
         $event->getWorkerConfiguration()->getLogger()->success('Restarting worker');
+    }
+
+    public function onWorkerUpdate(WorkerStartEvent $event): void
+    {
+        $event->getWorkerConfiguration()->getLogger()->success('Updating worker');
     }
 }

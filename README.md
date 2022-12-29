@@ -87,6 +87,7 @@ $worker->start();
 | WorkerStopEvent          | Executed when worker is stopped.           |
 | WorkerRestartEvent       | Executed when worker is restarted.         |
 | WorkerRunningEvent       | Executed everytime an event is processed.  |
+| WorkerUpdateEvent        | Executed everytime the worker is updated.  |
 | WorkerIntervalStartEvent | Executed everytime a interval is started.  |
 | WorkerIntervalEndEvent   | Executed everytime a interval is finished. |
 All events are located in namespace `Flexic\Scheduler\Event\Event\<EventName>`
