@@ -100,6 +100,8 @@ final class Worker extends BaseWorker
 
         $this->eventDispatcher->dispatch(new Event\Lifecycle\WorkerUpdateEvent($this->configuration));
 
+        $worker->start();
+
         return $worker;
     }
 
