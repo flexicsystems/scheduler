@@ -50,7 +50,7 @@ final class Worker extends BaseWorker
         Setup::registerEventListener($this->eventDispatcher);
 
         $this->eventDispatcher->dispatch(
-            new Event\WorkerInitializedEvent(
+            new Event\Lifecycle\WorkerInitializedEvent(
                 $this->configuration,
                 $this->initializedScheduleEvent,
             ),
@@ -77,14 +77,14 @@ final class Worker extends BaseWorker
     {
         $this->execute();
 
-        $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
+        $this->eventDispatcher->dispatch(new Event\Lifecycle\WorkerStartEvent($this->configuration));
     }
 
     public function stop(): void
     {
         $this->shouldStop = true;
 
-        $this->eventDispatcher->dispatch(new Event\WorkerStopEvent($this->configuration));
+        $this->eventDispatcher->dispatch(new Event\Lifecycle\WorkerStopEvent($this->configuration));
     }
 
     public function restart(): void
@@ -133,7 +133,7 @@ final class Worker extends BaseWorker
                 if ($schedule->getExpression()->isDue()) {
                     $scheduleEvent = $event->getScheduleEvent();
 
-                    $this->eventDispatcher->dispatch(new Event\WorkerExecuteEvent(
+                    $this->eventDispatcher->dispatch(new Event\Execute\WorkerExecuteEvent(
                         $this->configuration,
                         $this->eventDispatcher,
                         $scheduleEvent,
@@ -144,6 +144,8 @@ final class Worker extends BaseWorker
 
                 $this->timezone->default();
             }
+
+            $this->eventDispatcher->dispatch(new Event\Execute\WorkerExecuteParallelResumeEvent());
 
             $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));
 

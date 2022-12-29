@@ -10,9 +10,10 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace Flexic\Scheduler\Event\Event;
+namespace Flexic\Scheduler\Event\Event\Execute;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
+use Flexic\Scheduler\Event\Event\WorkerEventInterface;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 use Flexic\Scheduler\Schedule;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

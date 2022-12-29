@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Event\Listener;
 
-use Flexic\Scheduler\Event\Event\WorkerInitializedEvent;
-use Flexic\Scheduler\Event\Event\WorkerRestartEvent;
-use Flexic\Scheduler\Event\Event\WorkerStartEvent;
-use Flexic\Scheduler\Event\Event\WorkerStopEvent;
-use Flexic\Scheduler\Event\Event\WorkerUpdateEvent;
+use Flexic\Scheduler\Event\Event\Lifecycle\WorkerInitializedEvent;
+use Flexic\Scheduler\Event\Event\Lifecycle\WorkerRestartEvent;
+use Flexic\Scheduler\Event\Event\Lifecycle\WorkerStartEvent;
+use Flexic\Scheduler\Event\Event\Lifecycle\WorkerStopEvent;
+use Flexic\Scheduler\Event\Event\Lifecycle\WorkerUpdateEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
