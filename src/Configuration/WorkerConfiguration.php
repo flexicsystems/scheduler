@@ -40,7 +40,7 @@ final class WorkerConfiguration extends Configuration
 
         $this->logger = new WorkerLogger(
             $io,
-            $logger
+            $logger,
         );
     }
 

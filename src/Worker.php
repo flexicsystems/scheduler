@@ -19,7 +19,6 @@ use Flexic\Scheduler\DateTime\Timer;
 use Flexic\Scheduler\DateTime\Timezone;
 use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Factory\InitializedScheduleEventFactory;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Worker extends BaseWorker
@@ -53,7 +52,9 @@ final class Worker extends BaseWorker
         Setup::registerEventListener($this->eventDispatcher);
     }
 
-    /** @deprecated Using run() method directly is deprecated. Use start() method instead. */
+    /**
+     * @deprecated Using run() method directly is deprecated. Use start() method instead.
+     */
     public function run(): void
     {
         $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
@@ -97,7 +98,8 @@ final class Worker extends BaseWorker
         $this->shouldStop = true;
     }
 
-    public function restart(): self {
+    public function restart(): self
+    {
         $this->stop();
 
         $worker = new $this(

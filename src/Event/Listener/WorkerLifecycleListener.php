@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Event\Listener;
 
-use Flexic\Scheduler\Event\Event\WorkerStartEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
