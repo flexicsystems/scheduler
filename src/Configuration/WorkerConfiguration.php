@@ -17,8 +17,9 @@ use Flexic\Scheduler\Logger\Logger;
 use Flexic\Scheduler\Worker;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class WorkerConfiguration extends Configuration
+final class WorkerConfiguration
 {
     public Worker $worker;
 
@@ -31,13 +32,17 @@ final class WorkerConfiguration extends Configuration
         ?SymfonyStyle $io = null,
         ?LoggerInterface $logger = null,
     ) {
-        $this->options = $this->resolve($options, [
+        $resolver = new OptionsResolver();
+
+        $resolver->setDefaults([
             WorkerOptions::SCHEDULE_EVENT_LIMIT => null,
             WorkerOptions::TIME_LIMIT => null,
             WorkerOptions::MEMORY_LIMIT => null,
             WorkerOptions::INTERVAL_LIMIT => null,
             WorkerOptions::PARALLEL_EXECUTION => false,
         ]);
+
+        $this->options = $resolver->resolve($options);
 
         $this->logger = new Logger(
             $io,
