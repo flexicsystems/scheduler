@@ -79,6 +79,19 @@ $worker->start();
 | restart() |        Reinitialize and restarts the worker.         |
 | update()  | Update the worker and starts with new configuration. |
 
+### Worker Lifecycle Events
+| Event Name               | Description                                |
+|--------------------------|--------------------------------------------|
+| WorkerInitializedEvent   | Executed when worker is initialized.       |
+| WorkerStartEvent         | Executed when worker is started.           |
+| WorkerStopEvent          | Executed when worker is stopped.           |
+| WorkerRestartEvent       | Executed when worker is restarted.         |
+| WorkerRunningEvent       | Executed everytime an event is processed.  |
+| WorkerIntervalStartEvent | Executed everytime a interval is started.  |
+| WorkerIntervalEndEvent   | Executed everytime a interval is finished. |
+All events are located in namespace `Flexic\Scheduler\Event\Event\<EventName>`
+
+
 ----
 ### License
 This package is licensed using the GNU License.
