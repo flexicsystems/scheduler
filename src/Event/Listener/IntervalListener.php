@@ -40,7 +40,7 @@ final class IntervalListener implements EventSubscriberInterface, LoggerAwareInt
 
     public function onWorkerIntervalStart(WorkerIntervalStartEvent $event): void
     {
-        $event->getWorkerConfiguration()->getLogger()->info(\sprintf('[ScheduleWorker] Interval %s started', $event->getInterval()));
+        $event->getWorkerConfiguration()->getLogger()->info(\sprintf('Interval %s started', $event->getInterval()));
 
         $memoryLimit = $event->getWorkerConfiguration()->options[WorkerOptions::MEMORY_LIMIT];
 

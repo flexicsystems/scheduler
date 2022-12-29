@@ -40,7 +40,7 @@ final class WorkerEventListener implements EventSubscriberInterface, LoggerAware
     {
         $event->getWorkerConfiguration()->getLogger()->success(
             \sprintf(
-                '[ScheduleWorker] Handle event "%s". Next run: "%s"',
+                'Handle event "%s". Next run: "%s"',
                 $event->getScheduleEvent()::class,
                 $event->getSchedule()->getExpression()->getNextRunDate()->format('Y-m-d H:i:s'),
             ),

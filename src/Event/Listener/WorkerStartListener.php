@@ -30,6 +30,6 @@ final class WorkerStartListener implements EventSubscriberInterface, LoggerAware
 
     public function onWorkerStart(WorkerStartEvent $event): void
     {
-        $event->getWorkerConfiguration()->getLogger()->success('[ScheduleWorker] Starting worker');
+        $event->getWorkerConfiguration()->getLogger()->success('Starting worker');
     }
 }
