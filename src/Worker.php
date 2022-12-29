@@ -21,7 +21,7 @@ use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Factory\InitializedScheduleEventFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class Worker
+final class Worker extends BaseWorker
 {
     private bool $shouldStop;
 
@@ -88,5 +88,22 @@ final class Worker
     public function stop(): void
     {
         $this->shouldStop = true;
+    }
+
+    public function restart(
+        ?WorkerConfiguration $configuration,
+        ?array $scheduleEvents,
+    ): self {
+        $this->stop();
+
+        $worker = new $this(
+            $configuration ?? $this->configuration,
+            $scheduleEvents ?? $this->initializedScheduleEvent,
+            $this->eventDispatcher,
+        );
+
+        $worker->run();
+
+        return $worker;
     }
 }
