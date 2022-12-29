@@ -26,6 +26,7 @@ final class InitializedScheduleEventFactory
         Worker $worker,
     ): array {
         $events = [];
+
         foreach ($scheduleEvents as $scheduleEvent) {
             if ($scheduleEvent instanceof ScheduleEventInterface) {
                 if ($scheduleEvent instanceof ScheduleWorkerControllable) {
@@ -33,6 +34,7 @@ final class InitializedScheduleEventFactory
                 }
 
                 $events[] = self::initializeEvent($scheduleEvent);
+
                 continue;
             }
 
