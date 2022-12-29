@@ -44,7 +44,7 @@ final class Worker extends BaseWorker
         Setup::registerEventListener($this->eventDispatcher);
 
         $this->eventDispatcher->dispatch(
-            new Event\WorkerInitializedEvent(
+            new Event\Lifecycle\WorkerInitializedEvent(
                 $this->configuration,
                 $this->initializedScheduleEvent,
             ),
@@ -63,14 +63,14 @@ final class Worker extends BaseWorker
 
         $this->execute();
 
-        $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
+        $this->eventDispatcher->dispatch(new Event\Lifecycle\WorkerStartEvent($this->configuration));
     }
 
     public function stop(): void
     {
         $this->shouldStop = true;
 
-        $this->eventDispatcher->dispatch(new Event\WorkerStopEvent($this->configuration));
+        $this->eventDispatcher->dispatch(new Event\Lifecycle\WorkerStopEvent($this->configuration));
     }
 
     public function restart(): void
@@ -98,7 +98,7 @@ final class Worker extends BaseWorker
             $this->eventDispatcher,
         );
 
-        $this->eventDispatcher->dispatch(new Event\WorkerUpdateEvent($this->configuration));
+        $this->eventDispatcher->dispatch(new Event\Lifecycle\WorkerUpdateEvent($this->configuration));
 
         return $worker;
     }
@@ -108,7 +108,7 @@ final class Worker extends BaseWorker
         $interval = 1;
 
         while (!$this->shouldStop) {
-            $this->eventDispatcher->dispatch(new Event\WorkerIntervalStartEvent($this->configuration, $interval));
+            $this->eventDispatcher->dispatch(new Event\Interval\WorkerIntervalStartEvent($this->configuration, $interval));
 
             foreach ($this->initializedScheduleEvent as $event) {
                 /** @var Schedule $schedule */
@@ -119,15 +119,21 @@ final class Worker extends BaseWorker
                 if ($schedule->getExpression()->isDue()) {
                     $scheduleEvent = $event->getScheduleEvent();
 
-                    $scheduleEvent();
-
-                    $this->eventDispatcher->dispatch(new Event\WorkerRunningEvent($this->configuration, $scheduleEvent, $schedule, $interval));
+                    $this->eventDispatcher->dispatch(new Event\Execute\WorkerExecuteEvent(
+                        $this->configuration,
+                        $this->eventDispatcher,
+                        $scheduleEvent,
+                        $schedule,
+                        $interval,
+                    ));
                 }
 
                 $this->timezone->default();
             }
 
-            $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));
+            $this->eventDispatcher->dispatch(new Event\Execute\WorkerExecuteParallelResumeEvent());
+
+            $this->eventDispatcher->dispatch(new Event\Interval\WorkerIntervalEndEvent($this->configuration, $interval));
 
             ++$interval;
 

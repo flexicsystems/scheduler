@@ -20,11 +20,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class WorkerConfiguration extends Configuration
 {
-    public readonly array $options;
-
     public Worker $worker;
 
     public Logger $logger;
+
+    private readonly array $options;
 
     public function __construct(
         array $options = [],
@@ -36,6 +36,7 @@ final class WorkerConfiguration extends Configuration
             WorkerOptions::TIME_LIMIT => null,
             WorkerOptions::MEMORY_LIMIT => null,
             WorkerOptions::INTERVAL_LIMIT => null,
+            WorkerOptions::PARALLEL_EXECUTION => false,
         ]);
 
         $this->logger = new Logger(
@@ -57,5 +58,14 @@ final class WorkerConfiguration extends Configuration
     public function getWorker(): Worker
     {
         return $this->worker;
+    }
+
+    public function getOption(string $option): mixed
+    {
+        if (!\array_key_exists($option, $this->options)) {
+            throw new \InvalidArgumentException(\sprintf('The option "%s" does not exist.', $option));
+        }
+
+        return $this->options[$option];
     }
 }

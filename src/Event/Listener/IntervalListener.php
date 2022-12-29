@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Flexic\Scheduler\Event\Listener;
 
 use Flexic\Scheduler\Constants\WorkerOptions;
-use Flexic\Scheduler\Event\Event\WorkerIntervalEndEvent;
-use Flexic\Scheduler\Event\Event\WorkerIntervalStartEvent;
+use Flexic\Scheduler\Event\Event\Interval\WorkerIntervalEndEvent;
+use Flexic\Scheduler\Event\Event\Interval\WorkerIntervalStartEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -42,13 +42,13 @@ final class IntervalListener implements EventSubscriberInterface, LoggerAwareInt
     {
         $event->getWorkerConfiguration()->getLogger()->info(\sprintf('Interval %s started', $event->getInterval()));
 
-        $memoryLimit = $event->getWorkerConfiguration()->options[WorkerOptions::MEMORY_LIMIT];
+        $memoryLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::MEMORY_LIMIT);
 
         if (null !== $memoryLimit && \memory_get_usage() > $memoryLimit) {
             $event->getWorkerConfiguration()->getWorker()->stop();
         }
 
-        $timeLimit = $event->getWorkerConfiguration()->options[WorkerOptions::TIME_LIMIT];
+        $timeLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::TIME_LIMIT);
 
         if (null !== $timeLimit && \time() - $this->startTime > $timeLimit) {
             $event->getWorkerConfiguration()->getWorker()->stop();
@@ -57,7 +57,7 @@ final class IntervalListener implements EventSubscriberInterface, LoggerAwareInt
 
     public function onWorkerIntervalEnd(WorkerIntervalEndEvent $event): void
     {
-        if ($event->getWorkerConfiguration()->options[WorkerOptions::INTERVAL_LIMIT] !== null && $event->getWorkerConfiguration()->options[WorkerOptions::INTERVAL_LIMIT] <= $event->getInterval()) {
+        if ($event->getWorkerConfiguration()->getOption(WorkerOptions::INTERVAL_LIMIT) !== null && $event->getWorkerConfiguration()->getOption(WorkerOptions::INTERVAL_LIMIT) <= $event->getInterval()) {
             $event->getWorkerConfiguration()->getWorker()->stop();
         }
     }

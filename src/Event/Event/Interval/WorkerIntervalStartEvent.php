@@ -10,19 +10,26 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace Flexic\Scheduler\Event\Event;
+namespace Flexic\Scheduler\Event\Event\Interval;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
+use Flexic\Scheduler\Event\Event\WorkerEventInterface;
 
-final class WorkerRestartEvent implements WorkerEventInterface
+final class WorkerIntervalStartEvent implements WorkerEventInterface
 {
     public function __construct(
         readonly private WorkerConfiguration $workerConfiguration,
+        readonly private int $interval,
     ) {
     }
 
     public function getWorkerConfiguration(): WorkerConfiguration
     {
         return $this->workerConfiguration;
+    }
+
+    public function getInterval(): int
+    {
+        return $this->interval;
     }
 }
