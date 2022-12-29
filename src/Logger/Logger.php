@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @version 1.0.0
  */
 
-namespace Flexic\Scheduler;
+namespace Flexic\Scheduler\Logger;
 
-final class WorkerLogger
+final class Logger
 {
     public function __construct(
         readonly private null|\Symfony\Component\Console\Style\SymfonyStyle $io = null,

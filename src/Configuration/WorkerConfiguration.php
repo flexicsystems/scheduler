@@ -14,7 +14,7 @@ namespace Flexic\Scheduler\Configuration;
 
 use Flexic\Scheduler\Constants\WorkerOptions;
 use Flexic\Scheduler\Worker;
-use Flexic\Scheduler\WorkerLogger;
+use Flexic\Scheduler\Logger\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -24,7 +24,7 @@ final class WorkerConfiguration extends Configuration
 
     public Worker $worker;
 
-    public WorkerLogger $logger;
+    public Logger $logger;
 
     public function __construct(
         array $options = [],
@@ -38,13 +38,13 @@ final class WorkerConfiguration extends Configuration
             WorkerOptions::INTERVAL_LIMIT => null,
         ]);
 
-        $this->logger = new WorkerLogger(
+        $this->logger = new Logger(
             $io,
             $logger,
         );
     }
 
-    public function getLogger(): WorkerLogger
+    public function getLogger(): Logger
     {
         return $this->logger;
     }
