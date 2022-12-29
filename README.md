@@ -1,4 +1,4 @@
-🕧 PHP Schedule
+🕧 PHP Scheduler
 ----------------
 
 PHP Schedule is a simple library for scheduling tasks in PHP.   
