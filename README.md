@@ -93,7 +93,6 @@ $worker->start();
 | WorkerIntervalEndEvent   | Executed everytime a interval is finished.          |
 All events are located in namespace `Flexic\Scheduler\Event\Event\<EventName>`
 
-
 ----
 ### License
 This package is licensed using the GNU License.

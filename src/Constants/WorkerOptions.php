@@ -22,5 +22,5 @@ final class WorkerOptions
 
     public const MEMORY_LIMIT = 'memoryLimit';
 
-    public const PARALLEL_EXECUTION = 'parallelExecution';
+    public const PARALLEL_EXECUTION = 'parallel';
 }
