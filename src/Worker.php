@@ -15,42 +15,32 @@ namespace Flexic\Scheduler;
 use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
 use Flexic\Scheduler\Configuration\Setup;
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
-use Flexic\Scheduler\DateTime\Timer;
-use Flexic\Scheduler\DateTime\Timezone;
 use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Factory\InitializedScheduleEventFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Worker extends BaseWorker
 {
-    private bool $shouldStop;
-
-    private readonly WorkerConfiguration $configuration;
-
-    private readonly Timer $timer;
-
     /**
      * @var array<int, InitializedScheduleEvent>
      */
     private readonly array $initializedScheduleEvent;
 
-    private Timezone $timezone;
-
     public function __construct(
-        WorkerConfiguration $configuration,
+        readonly private WorkerConfiguration $configuration,
         readonly private array $scheduleEvents,
         readonly private EventDispatcherInterface $eventDispatcher,
-        private bool $initialStarted = false,
+        private bool $initialized = false,
+        private bool $shouldStop = false,
+        readonly private Time\Timer $timer = new Time\Timer(),
+        readonly private Time\Timezone $timezone = new Time\Timezone(),
     ) {
-        $configuration->setWorker($this);
-        $this->configuration = $configuration;
-        $this->shouldStop = false;
+        $this->configuration->setWorker($this);
         $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize(
             $this->scheduleEvents,
             $this,
         );
-        $this->timer = new Timer();
-        $this->timezone = new Timezone();
+
         Setup::registerEventListener($this->eventDispatcher);
 
         $this->eventDispatcher->dispatch(
@@ -61,29 +51,13 @@ final class Worker extends BaseWorker
         );
     }
 
-    /**
-     * @deprecated Using run() method directly is deprecated and will be removed in v1.1.0. Use start() method instead.
-     */
-    public function run(): void
-    {
-        \trigger_deprecation(
-            'flexic/scheduler',
-            '1.0.2',
-            'Using "%s" method directly is deprecated, use "%s" method instead.',
-            'run()',
-            'start()',
-        );
-
-        $this->start();
-    }
-
     public function start(): void
     {
-        if ($this->initialStarted) {
+        if ($this->initialized) {
             $this->timer->waitForNextTick();
         }
 
-        $this->initialStarted = true;
+        $this->initialized = true;
 
         $this->shouldStop = false;
 

@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Flexic\Scheduler\Configuration;
 
 use Flexic\Scheduler\Constants\WorkerOptions;
-use Flexic\Scheduler\Worker;
 use Flexic\Scheduler\Logger\Logger;
+use Flexic\Scheduler\Worker;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
