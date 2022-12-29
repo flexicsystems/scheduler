@@ -112,7 +112,7 @@ final class Worker extends BaseWorker
             $this->eventDispatcher,
         );
 
-        $this->eventDispatcher->dispatch(new Event\WorkerUpdateEvent($this->configuration));
+        $this->eventDispatcher->dispatch(new Event\Lifecycle\WorkerUpdateEvent($this->configuration));
 
         return $worker;
     }
