@@ -62,6 +62,11 @@ final class Worker extends BaseWorker
      */
     public function run(): void
     {
+        $this->start();
+    }
+
+    private function execute(): void
+    {
         $interval = 1;
 
         while (!$this->shouldStop) {
@@ -93,7 +98,7 @@ final class Worker extends BaseWorker
 
     public function start(): void
     {
-        $this->run();
+        $this->execute();
 
         $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
     }
@@ -115,7 +120,7 @@ final class Worker extends BaseWorker
             $this->eventDispatcher,
         );
 
-        $worker->run();
+        (new \ReflectionClass($this))->getMethod('execute')->invoke($worker);
 
         return $worker;
     }
