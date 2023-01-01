@@ -14,8 +14,6 @@ namespace Flexic\Scheduler\Command;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
 use Flexic\Scheduler\Constants\WorkerOptions;
-use Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface;
-use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 use Flexic\Scheduler\Resolver\ScheduleEventFileResolver;
 use Flexic\Scheduler\Worker;
 use Symfony\Component\Console;
@@ -105,7 +103,7 @@ final class RunWorkerCommand extends Console\Command\Command
 
         $scheduleEvents = (new ScheduleEventFileResolver())->resolve(
             $this->scheduleEvents,
-            $input->getArgument('schedule-event')
+            $input->getArgument('schedule-event'),
         );
 
         $worker = new Worker(
