@@ -16,6 +16,7 @@ use Flexic\Scheduler\Configuration\WorkerConfiguration;
 use Flexic\Scheduler\Constants\WorkerOptions;
 use Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
+use Flexic\Scheduler\Resolver\ScheduleEventFileResolver;
 use Flexic\Scheduler\Worker;
 use Symfony\Component\Console;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -91,11 +92,6 @@ final class RunWorkerCommand extends Console\Command\Command
     ): int {
         $io = new SymfonyStyle($input, $output);
 
-        $this->registerScheduleEvents(
-            (array) $input->getArgument('schedule-event'),
-            $io,
-        );
-
         $configuration = new WorkerConfiguration(
             [
                 WorkerOptions::SCHEDULE_EVENT_LIMIT => $input->getOption(WorkerOptions::SCHEDULE_EVENT_LIMIT),
@@ -107,8 +103,10 @@ final class RunWorkerCommand extends Console\Command\Command
             $io,
         );
 
-        $scheduleEvents = [];
-        \array_push($scheduleEvents, ...$this->scheduleEvents);
+        $scheduleEvents = (new ScheduleEventFileResolver())->resolve(
+            $this->scheduleEvents,
+            $input->getArgument('schedule-event')
+        );
 
         $worker = new Worker(
             $configuration,
@@ -119,57 +117,5 @@ final class RunWorkerCommand extends Console\Command\Command
         $worker->start();
 
         return Console\Command\Command::SUCCESS;
-    }
-
-    private function registerScheduleEvents(
-        array $scheduleEvents,
-        SymfonyStyle $io,
-    ): void {
-        if (\count($scheduleEvents) <= 0) {
-            $scheduleEvents = [];
-            \array_push($scheduleEvents, ...$this->scheduleEvents);
-
-            if (\count($scheduleEvents) <= 0) {
-                $io->error('No schedule events found.');
-
-                exit(1);
-            }
-
-            return;
-        }
-
-        $events = [];
-
-        foreach ($scheduleEvents as $eventFile) {
-            try {
-                $path = \realpath(\sprintf('%s/%s', \getcwd(), $eventFile));
-
-                if (false === $path) {
-                    $io->error(\sprintf('Schedule event file "%s" not found.', $eventFile));
-
-                    continue;
-                }
-
-                $configuration = require_once $path;
-
-                if ($configuration instanceof ScheduleEventInterface || $configuration instanceof ScheduleEventFactoryInterface) {
-                    $events[] = $configuration;
-                }
-
-                if (\is_array($configuration)) {
-                    \array_map(static function (ScheduleEventInterface|ScheduleEventFactoryInterface $event) use (&$events): void {
-                        $events[] = $event;
-                    }, \array_filter($configuration, static function ($event): bool {
-                        return $event instanceof ScheduleEventInterface || $event instanceof ScheduleEventFactoryInterface;
-                    }));
-                }
-            } catch (\Exception $exception) {
-                $io->error(\sprintf('Unexpected error while load event file: %s', $exception->getMessage()));
-
-                continue;
-            }
-        }
-
-        $this->scheduleEvents = $events;
     }
 }
