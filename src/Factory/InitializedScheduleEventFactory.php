@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022-2022 Flexic-Systems
+ * Copyright (c) 2022-2023 Flexic-Systems
  *
  * @author Hendrik Legge <hendrik.legge@themepoint.de>
  *
@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Flexic\Scheduler\Factory;
 
 use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
-use Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 use Flexic\Scheduler\Interfaces\ScheduleWorkerControllable;
 use Flexic\Scheduler\Resolver\ScheduleEventInputResolver;
@@ -25,7 +24,8 @@ final class InitializedScheduleEventFactory
     public function __construct(
         readonly private Worker $worker,
         readonly private ScheduleEventInputResolver $scheduleEventInputResolver = new ScheduleEventInputResolver(),
-    ) {}
+    ) {
+    }
 
     public function initialize(
         array $scheduleEvents,

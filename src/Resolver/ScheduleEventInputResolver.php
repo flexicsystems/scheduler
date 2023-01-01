@@ -1,14 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Copyright (c) 2022-2023 Flexic-Systems
+ *
+ * @author Hendrik Legge <hendrik.legge@themepoint.de>
+ *
+ * @version 1.0.0
+ */
+
 namespace Flexic\Scheduler\Resolver;
 
 use Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 
-class ScheduleEventInputResolver
+final class ScheduleEventInputResolver
 {
     /**
-     * @param array<ScheduleEventInterface|ScheduleEventFactoryInterface> $input
+     * @param array<ScheduleEventFactoryInterface|ScheduleEventInterface> $input
+     *
      * @return array<ScheduleEventInterface>
      */
     public function resolve(array $input): array
