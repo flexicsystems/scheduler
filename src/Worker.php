@@ -35,9 +35,8 @@ final class Worker extends BaseWorker
         readonly private Time\Timezone $timezone = new Time\Timezone(),
     ) {
         $this->configuration->setWorker($this);
-        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize(
+        $this->initializedScheduleEvent = (new InitializedScheduleEventFactory($this))->initialize(
             $this->scheduleEvents,
-            $this,
         );
 
         $this->setupEventSystem($this->eventDispatcher);

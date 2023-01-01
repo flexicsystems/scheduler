@@ -16,46 +16,36 @@ use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
 use Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface;
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 use Flexic\Scheduler\Interfaces\ScheduleWorkerControllable;
+use Flexic\Scheduler\Resolver\ScheduleEventInputResolver;
 use Flexic\Scheduler\Schedule;
 use Flexic\Scheduler\Worker;
 
 final class InitializedScheduleEventFactory
 {
-    public static function initialize(
+    public function __construct(
+        readonly private Worker $worker,
+        readonly private ScheduleEventInputResolver $scheduleEventInputResolver = new ScheduleEventInputResolver(),
+    ) {}
+
+    public function initialize(
         array $scheduleEvents,
-        Worker $worker,
     ): array {
-        $events = [];
-
-        foreach ($scheduleEvents as $scheduleEvent) {
-            if ($scheduleEvent instanceof ScheduleEventInterface) {
-                if ($scheduleEvent instanceof ScheduleWorkerControllable) {
-                    $scheduleEvent->setWorker($worker);
-                }
-
-                $events[] = self::initializeEvent($scheduleEvent);
-
-                continue;
-            }
-
-            if ($scheduleEvent instanceof ScheduleEventFactoryInterface) {
-                foreach ($scheduleEvent->create() as $factorizedScheduleEvent) {
-                    if ($factorizedScheduleEvent instanceof ScheduleWorkerControllable) {
-                        $factorizedScheduleEvent->setWorker($worker);
-                    }
-
-                    $events[] = self::initializeEvent($factorizedScheduleEvent);
-                }
-            }
-        }
-
-        return $events;
+        return \array_map(
+            function (ScheduleEventInterface $scheduleEvent): InitializedScheduleEvent {
+                return $this->initializeEvent($scheduleEvent);
+            },
+            $this->scheduleEventInputResolver->resolve($scheduleEvents),
+        );
     }
 
-    public static function initializeEvent(
+    public function initializeEvent(
         ScheduleEventInterface $scheduleEvent,
     ): InitializedScheduleEvent {
         $schedule = new Schedule();
+
+        if ($scheduleEvent instanceof ScheduleWorkerControllable) {
+            $scheduleEvent->setWorker($this->worker);
+        }
 
         $scheduleEvent->configure($schedule);
 
