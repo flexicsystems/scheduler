@@ -101,9 +101,11 @@ final class RunWorkerCommand extends Console\Command\Command
             $io,
         );
 
+        $eventFiles = $input->getArgument('schedule-event');
+
         $scheduleEvents = (new ScheduleEventFileResolver())->resolve(
             $this->scheduleEvents,
-            $input->getArgument('schedule-event'),
+            \is_array($eventFiles) ? $eventFiles : [],
         );
 
         $worker = new Worker(
