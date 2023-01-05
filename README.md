@@ -72,6 +72,44 @@ $worker = new \Flexic\Scheduler\Worker(
 $worker->start();
 ```
 
+### ScheduleEvent Factory
+The `ScheduleEventInterface` is implemented to allow the usage of a factory to create the event. This is useful if you want to use a dependency injection container to create the event.
+
+```php
+class MyScheduleEventFactory implements \Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface
+{
+    public function create(): array {
+        return [
+            new MyScheduleEvent('foo'),
+            new MyScheduleEvent('bar'),
+        ];
+    }
+}
+```
+
+### Schedule API
+| Method                          | Description                                    |
+|---------------------------------|------------------------------------------------|
+| cron($expression)               | Schedule the event on a Cron expression.       |
+| minute($miute)                  | Set minutes to cron expression                 |
+| minutes($miutes)                | Set a list of minutes to cron expression       |
+| minutesBetween($start, $end)    | Set a range of minutes to cron expression      |
+| hour($hour)                     | Set hours to cron expression                   |
+| hours($hours)                   | Set a list of hours to cron expression         |
+| hoursBetween($start, $end)      | Set a range of hours to cron expression        |
+| day($day)                       | Set days to cron expression                    |
+| days($days)                     | Set a list of days to cron expression          |
+| daysBetween($start, $end)       | Set a range of days to cron expression         |
+| month($month)                   | Set months to cron expression                  |
+| months($months)                 | Set a list of months to cron expression        |
+| monthsBetween($start, $end)     | Set a range of months to cron expression       |
+| dayOfWeek($day)                 | Set days of week to cron expression            |
+| daysOfWeek($days)               | Set a list of days of week to cron expression  |
+| daysOfWeekBetween($start, $end) | Set a range of days of week to cron expression |
+
+
+
+
 ### Worker API
 | Method    |                     Description                      |
 |-----------|:----------------------------------------------------:|
@@ -103,21 +141,6 @@ $worker->start();
 | WorkerExecuteSequentialEvent     | Executed everytime an event is executed sequentially.     |
 | WorkerExecuteParallelStartEvent  | Executed everytime an event is executed parallel.         |
 | WorkerExecuteParallelResumeEvent | Executed everytime an parallel executed event is resumed. |
-
-### ScheduleEvent Factory
-The `ScheduleEventInterface` is implemented to allow the usage of a factory to create the event. This is useful if you want to use a dependency injection container to create the event.
-
-```php
-class MyScheduleEventFactory implements \Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface
-{
-    public function create(): array {
-        return [
-            new MyScheduleEvent('foo'),
-            new MyScheduleEvent('bar'),
-        ];
-    }
-}
-```
 
 ----
 ### License
