@@ -122,22 +122,22 @@ class MyScheduleEventFactory implements \Flexic\Scheduler\Interfaces\ScheduleEve
 ### Worker Lifecycle Events
 | Event Name                       | Description                                               |
 |----------------------------------|-----------------------------------------------------------|
-| **Worker Lifecycle**             | Flexic\Scheduler\Event\Event\Lifecycle\<EventName>        |
+| **Worker Lifecycle**             | Flexic\Scheduler\Event\Event\Lifecycle\\\<EventName>      |
 | WorkerInitializedEvent           | Executed when worker is initialized.                      |
 | WorkerStartEvent                 | Executed when worker is started.                          |
 | WorkerStopEvent                  | Executed when worker is stopped.                          |
 | WorkerRestartEvent               | Executed when worker is restarted.                        |
 | WorkerUpdateEvent                | Executed everytime the worker is updated.                 |
 |                                  |
-| **Run Lifecycle**                | Flexic\Scheduler\Event\Event\Run\<EventName>              |
+| **Run Lifecycle**                | Flexic\Scheduler\Event\Event\Run\\\<EventName>            |
 | WorkerRunStartEvent              | Executed everytime an event is started to process.        |
 | WorkerRunEnvEvent                | Executed everytime an event is finished to process.       |
 |                                  |
-| **Interval Lifecycle**           | Flexic\Scheduler\Event\Event\Interval\<EventName>         |
+| **Interval Lifecycle**           | Flexic\Scheduler\Event\Event\Interval\\\<EventName>       |
 | WorkerIntervalStartEvent         | Executed everytime a interval is started.                 |
 | WorkerIntervalEndEvent           | Executed everytime a interval is finished.                |
 |                                  |
-| **Execution Lifecycle**          | Flexic\Scheduler\Event\Event\Execute\<EventName>          |
+| **Execution Lifecycle**          | Flexic\Scheduler\Event\Event\Execute\\\<EventName>        |
 | WorkerExecuteEvent               | Executed everytime an event is executed.                  |
 | WorkerExecuteSequentialEvent     | Executed everytime an event is executed sequentially.     |
 | WorkerExecuteParallelStartEvent  | Executed everytime an event is executed parallel.         |
