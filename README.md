@@ -91,6 +91,7 @@ class MyScheduleEventFactory implements \Flexic\Scheduler\Interfaces\ScheduleEve
 | Method                          | Description                                    |
 |---------------------------------|------------------------------------------------|
 | cron($expression)               | Schedule the event on a Cron expression.       |
+| timezone($timezone)             | Set the timezone the expression should run in. |
 | minute($miute)                  | Set minutes to cron expression                 |
 | minutes($miutes)                | Set a list of minutes to cron expression       |
 | minutesBetween($start, $end)    | Set a range of minutes to cron expression      |
