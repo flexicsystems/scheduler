@@ -108,9 +108,6 @@ class MyScheduleEventFactory implements \Flexic\Scheduler\Interfaces\ScheduleEve
 | daysOfWeek($days)               | Set a list of days of week to cron expression  |
 | daysOfWeekBetween($start, $end) | Set a range of days of week to cron expression |
 
-
-
-
 ### Worker API
 | Method                                  |                     Description                      |
 |-----------------------------------------|:----------------------------------------------------:|
