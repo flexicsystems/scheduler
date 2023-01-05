@@ -112,12 +112,12 @@ class MyScheduleEventFactory implements \Flexic\Scheduler\Interfaces\ScheduleEve
 
 
 ### Worker API
-| Method    |                     Description                      |
-|-----------|:----------------------------------------------------:|
-| start()   |                  Starts the worker.                  |
-| stop()    |                  Stops the worker.                   |
-| restart() |        Reinitialize and restarts the worker.         |
-| update()  | Update the worker and starts with new configuration. |
+| Method                                  |                     Description                      |
+|-----------------------------------------|:----------------------------------------------------:|
+| start()                                 |                  Starts the worker.                  |
+| stop()                                  |                  Stops the worker.                   |
+| restart()                               |        Reinitialize and restarts the worker.         |
+| update($configuration, $scheduleEvents) | Update the worker and starts with new configuration. |
 
 ### Worker Lifecycle Events
 | Event Name                       | Description                                               |
