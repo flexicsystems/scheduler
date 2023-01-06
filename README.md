@@ -88,25 +88,20 @@ class MyScheduleEventFactory implements \Flexic\Scheduler\Interfaces\ScheduleEve
 ```
 
 ### Schedule API
-| Method                          | Description                                    |
-|---------------------------------|------------------------------------------------|
-| cron($expression)               | Schedule the event on a Cron expression.       |
-| timezone($timezone)             | Set the timezone the expression should run in. |
-| minute($minute)                 | Set minutes to cron expression                 |
-| minutes($minutes)               | Set a list of minutes to cron expression       |
-| minutesBetween($start, $end)    | Set a range of minutes to cron expression      |
-| hour($hour)                     | Set hours to cron expression                   |
-| hours($hours)                   | Set a list of hours to cron expression         |
-| hoursBetween($start, $end)      | Set a range of hours to cron expression        |
-| day($day)                       | Set days to cron expression                    |
-| days($days)                     | Set a list of days to cron expression          |
-| daysBetween($start, $end)       | Set a range of days to cron expression         |
-| month($month)                   | Set months to cron expression                  |
-| months($months)                 | Set a list of months to cron expression        |
-| monthsBetween($start, $end)     | Set a range of months to cron expression       |
-| dayOfWeek($day)                 | Set days of week to cron expression            |
-| daysOfWeek($days)               | Set a list of days of week to cron expression  |
-| daysOfWeekBetween($start, $end) | Set a range of days of week to cron expression |
+| Method              | Description                                                                                   |
+|---------------------|-----------------------------------------------------------------------------------------------|
+| cron($expression)   | Schedule the event on a Cron expression.                                                      |
+| timezone($timezone) | Set the timezone the expression should run in.                                                |
+| minute($minute)     | Set minutes to cron expression                                                                |
+| hour($hour)         | Set hours to cron expression                                                                  |
+| day($day)           | Set days to cron expression                                                                   |
+| month($month)       | Set months to cron expression                                                                 |
+| dayOfWeek($day)     | Set days of week to cron expression                                                           |
+| builder()           | Return an instance of [`flexic/cron-builder`](https://github.com/flexicsystems/cron-builder). |
+
+`cron()` method accepts string, or objects of type `CronBuilder` & `Cron` of [`flexic/cron-builder`](https://github.com/flexicsystems/cron-builder).
+
+Methods for tokens allows usage of Expressions from [`flexic/cron-builder`](https://github.com/flexicsystems/cron-builder).
 
 ### Worker API
 | Method                                  |                     Description                      |
