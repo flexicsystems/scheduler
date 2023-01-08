@@ -72,38 +72,6 @@ $worker = new \Flexic\Scheduler\Worker(
 $worker->start();
 ```
 
-### Worker API
-| Method    |                     Description                      |
-|-----------|:----------------------------------------------------:|
-| start()   |                  Starts the worker.                  |
-| stop()    |                  Stops the worker.                   |
-| restart() |        Reinitialize and restarts the worker.         |
-| update()  | Update the worker and starts with new configuration. |
-
-### Worker Lifecycle Events
-| Event Name                       | Description                                               |
-|----------------------------------|-----------------------------------------------------------|
-| **Worker Lifecycle**             | Flexic\Scheduler\Event\Event\Lifecycle\<EventName>        |
-| WorkerInitializedEvent           | Executed when worker is initialized.                      |
-| WorkerStartEvent                 | Executed when worker is started.                          |
-| WorkerStopEvent                  | Executed when worker is stopped.                          |
-| WorkerRestartEvent               | Executed when worker is restarted.                        |
-| WorkerUpdateEvent                | Executed everytime the worker is updated.                 |
-|                                  |
-| **Run Lifecycle**                | Flexic\Scheduler\Event\Event\Run\<EventName>              |
-| WorkerRunStartEvent              | Executed everytime an event is started to process.        |
-| WorkerRunEnvEvent                | Executed everytime an event is finished to process.       |
-|                                  |
-| **Interval Lifecycle**           | Flexic\Scheduler\Event\Event\Interval\<EventName>         |
-| WorkerIntervalStartEvent         | Executed everytime a interval is started.                 |
-| WorkerIntervalEndEvent           | Executed everytime a interval is finished.                |
-|                                  |
-| **Execution Lifecycle**          | Flexic\Scheduler\Event\Event\Execute\<EventName>          |
-| WorkerExecuteEvent               | Executed everytime an event is executed.                  |
-| WorkerExecuteSequentialEvent     | Executed everytime an event is executed sequentially.     |
-| WorkerExecuteParallelStartEvent  | Executed everytime an event is executed parallel.         |
-| WorkerExecuteParallelResumeEvent | Executed everytime an parallel executed event is resumed. |
-
 ### ScheduleEvent Factory
 The `ScheduleEventInterface` is implemented to allow the usage of a factory to create the event. This is useful if you want to use a dependency injection container to create the event.
 
@@ -118,6 +86,54 @@ class MyScheduleEventFactory implements \Flexic\Scheduler\Interfaces\ScheduleEve
     }
 }
 ```
+
+### Schedule API
+| Method              | Description                                                                                   |
+|---------------------|-----------------------------------------------------------------------------------------------|
+| cron($expression)   | Schedule the event on a Cron expression.                                                      |
+| timezone($timezone) | Set the timezone the expression should run in.                                                |
+| minute($minute)     | Set minutes to cron expression                                                                |
+| hour($hour)         | Set hours to cron expression                                                                  |
+| day($day)           | Set days to cron expression                                                                   |
+| month($month)       | Set months to cron expression                                                                 |
+| dayOfWeek($day)     | Set days of week to cron expression                                                           |
+| builder()           | Return an instance of [`flexic/cron-builder`](https://github.com/flexicsystems/cron-builder). |
+
+`cron()` method accepts string, or objects of type `CronBuilder` & `Cron` of [`flexic/cron-builder`](https://github.com/flexicsystems/cron-builder).
+
+Methods for tokens allows usage of Expressions from [`flexic/cron-builder`](https://github.com/flexicsystems/cron-builder).
+
+### Worker API
+| Method                                  |                     Description                      |
+|-----------------------------------------|:----------------------------------------------------:|
+| start()                                 |                  Starts the worker.                  |
+| stop()                                  |                  Stops the worker.                   |
+| restart()                               |        Reinitialize and restarts the worker.         |
+| update($configuration, $scheduleEvents) | Update the worker and starts with new configuration. |
+
+### Worker Lifecycle Events
+| Event Name                       | Description                                               |
+|----------------------------------|-----------------------------------------------------------|
+| **Worker Lifecycle**             | Flexic\Scheduler\Event\Event\Lifecycle\\\<EventName>      |
+| WorkerInitializedEvent           | Executed when worker is initialized.                      |
+| WorkerStartEvent                 | Executed when worker is started.                          |
+| WorkerStopEvent                  | Executed when worker is stopped.                          |
+| WorkerRestartEvent               | Executed when worker is restarted.                        |
+| WorkerUpdateEvent                | Executed everytime the worker is updated.                 |
+|                                  |
+| **Run Lifecycle**                | Flexic\Scheduler\Event\Event\Run\\\<EventName>            |
+| WorkerRunStartEvent              | Executed everytime an event is started to process.        |
+| WorkerRunEnvEvent                | Executed everytime an event is finished to process.       |
+|                                  |
+| **Interval Lifecycle**           | Flexic\Scheduler\Event\Event\Interval\\\<EventName>       |
+| WorkerIntervalStartEvent         | Executed everytime a interval is started.                 |
+| WorkerIntervalEndEvent           | Executed everytime a interval is finished.                |
+|                                  |
+| **Execution Lifecycle**          | Flexic\Scheduler\Event\Event\Execute\\\<EventName>        |
+| WorkerExecuteEvent               | Executed everytime an event is executed.                  |
+| WorkerExecuteSequentialEvent     | Executed everytime an event is executed sequentially.     |
+| WorkerExecuteParallelStartEvent  | Executed everytime an event is executed parallel.         |
+| WorkerExecuteParallelResumeEvent | Executed everytime an parallel executed event is resumed. |
 
 ----
 ### License
