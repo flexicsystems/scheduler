@@ -3,22 +3,23 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022-2022 Flexic-Systems
+ * Copyright (c) 2022-2023 Flexic-Systems
  *
  * @author Hendrik Legge <hendrik.legge@themepoint.de>
  *
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-namespace Flexic\Scheduler\Event\Event;
+namespace Flexic\Scheduler\Event\Event\Interval;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
+use Flexic\Scheduler\Event\Event\WorkerEventInterface;
 
-final class WorkerInitializedEvent implements WorkerEventInterface
+final class WorkerIntervalEndEvent implements WorkerEventInterface
 {
     public function __construct(
         readonly private WorkerConfiguration $workerConfiguration,
-        readonly private array $scheduleEvents,
+        readonly private int $interval,
     ) {
     }
 
@@ -27,8 +28,8 @@ final class WorkerInitializedEvent implements WorkerEventInterface
         return $this->workerConfiguration;
     }
 
-    public function getScheduleEvents(): array
+    public function getInterval(): int
     {
-        return $this->scheduleEvents;
+        return $this->interval;
     }
 }

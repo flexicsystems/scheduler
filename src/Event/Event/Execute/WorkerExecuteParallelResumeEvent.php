@@ -10,8 +10,11 @@ declare(strict_types=1);
  * @version 2.0.0
  */
 
-namespace Flexic\Scheduler\Event\Event;
+namespace Flexic\Scheduler\Event\Event\Execute;
 
-interface WorkerEventInterface
+final class WorkerExecuteParallelResumeEvent
 {
+    public function __construct()
+    {
+    }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16adcfadfe70278e0db7463833946fd3",
+    "content-hash": "72478ff09fe09295ae090e11b2aa43d8",
     "packages": [
         {
             "name": "dragonmantank/cron-expression",
@@ -66,6 +66,60 @@
                 }
             ],
             "time": "2022-09-10T18:51:20+00:00"
+        },
+        {
+            "name": "flexic/cron-builder",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/flexicsystems/cron-builder.git",
+                "reference": "90444c49e0a3af332718dc50f816c78a26f26ec0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/flexicsystems/cron-builder/zipball/90444c49e0a3af332718dc50f816c78a26f26ec0",
+                "reference": "90444c49e0a3af332718dc50f816c78a26f26ec0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "ergebnis/php-cs-fixer-config": "^4.9.0",
+                "phpstan/phpstan": "^1.8.8",
+                "phpstan/phpstan-deprecation-rules": "^1.0.0",
+                "phpstan/phpstan-strict-rules": "^1.4.4",
+                "phpunit/phpunit": "^9.5.26"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Flexic\\CronBuilder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Hendrik Legge",
+                    "email": "info@themepoint.de",
+                    "homepage": "https://themepoint.de"
+                }
+            ],
+            "description": " Builder for cronjob expressions.",
+            "keywords": [
+                "builder",
+                "cron",
+                "cronjob",
+                "expression"
+            ],
+            "support": {
+                "issues": "https://github.com/flexicsystems/cron-builder/issues",
+                "source": "https://github.com/flexicsystems/cron-builder/tree/1.0.0"
+            },
+            "time": "2023-01-06T14:36:34+00:00"
         },
         {
             "name": "psr/container",
