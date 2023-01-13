@@ -82,20 +82,19 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
 
             $scheduleEvent();
         });
-
-
     }
 
     public function onResumeParallelExecution(Event\Execute\WorkerExecuteParallelResumeEvent $event): void
     {
         $maxParallelExecution = $event->getWorkerConfiguration()->getOption(WorkerOptions::PARALLEL_EXECUTION_LIMIT);
 
-        if ($maxParallelExecution <= 0) {
+        if (0 >= $maxParallelExecution) {
             $maxParallelExecution = \count($this->parallelExecution);
         }
 
         while (\count($this->parallelExecution) > 0) {
             $started = [];
+
             foreach ($this->parallelExecution as $key => $fiber) {
                 if (\count($started) >= $maxParallelExecution) {
                     break;
