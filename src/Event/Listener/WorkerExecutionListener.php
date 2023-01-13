@@ -97,7 +97,7 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
 
             foreach ($this->parallelExecution as $key => $fiber) {
                 if (\count($started) >= $maxParallelExecution) {
-                    break;
+                    continue;
                 }
 
                 if (!$fiber->isStarted()) {
@@ -105,6 +105,12 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
                     $started[$key] = $fiber;
                 }
             }
+
+            $event->getWorkerConfiguration()->getLogger()->info(\sprintf(
+                'Started %s parallel executions of remaining %s.',
+                \count($started),
+                \count($this->parallelExecution)
+            ));
 
             foreach ($started as $key => $fiber) {
                 $fiber->resume();
