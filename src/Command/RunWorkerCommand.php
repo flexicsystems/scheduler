@@ -76,6 +76,13 @@ final class RunWorkerCommand extends Console\Command\Command
             'Allow worker to run events parallel.',
             null,
         );
+        $this->addOption(
+            WorkerOptions::PARALLEL_EXECUTION_LIMIT,
+            null,
+            Console\Input\InputOption::VALUE_REQUIRED,
+            'The maximum number of parallel events to run.',
+            0,
+        );
         $this->addArgument(
             'schedule-event',
             Console\Input\InputArgument::IS_ARRAY,
@@ -97,6 +104,7 @@ final class RunWorkerCommand extends Console\Command\Command
                 WorkerOptions::TIME_LIMIT => $input->getOption(WorkerOptions::TIME_LIMIT),
                 WorkerOptions::MEMORY_LIMIT => $input->getOption(WorkerOptions::MEMORY_LIMIT),
                 WorkerOptions::PARALLEL_EXECUTION => $input->getOption(WorkerOptions::PARALLEL_EXECUTION),
+                WorkerOptions::PARALLEL_EXECUTION_LIMIT => $input->getOption(WorkerOptions::PARALLEL_EXECUTION_LIMIT),
             ],
             $io,
         );
