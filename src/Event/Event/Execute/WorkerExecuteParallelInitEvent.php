@@ -14,7 +14,7 @@ namespace Flexic\Scheduler\Event\Event\Execute;
 
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 
-final class WorkerExecuteParallelStartEvent
+final class WorkerExecuteParallelInitEvent
 {
     public function __construct(
         readonly private ScheduleEventInterface $scheduleEvent,

@@ -131,7 +131,7 @@ final class Worker extends BaseWorker
                 $this->timezone->default();
             }
 
-            $this->eventDispatcher->dispatch(new Event\Execute\WorkerExecuteParallelResumeEvent());
+            $this->eventDispatcher->dispatch(new Event\Execute\WorkerExecuteParallelResumeEvent($this->configuration));
 
             $this->eventDispatcher->dispatch(new Event\Interval\WorkerIntervalEndEvent($this->configuration, $interval));
 

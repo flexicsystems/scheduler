@@ -34,7 +34,7 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
         return [
             Event\Execute\WorkerExecuteEvent::class => 'onWorkerExecute',
             Event\Execute\WorkerExecuteSequentialEvent::class => 'onWorkerExecuteSequential',
-            Event\Execute\WorkerExecuteParallelStartEvent::class => 'onStartParallelExecution',
+            Event\Execute\WorkerExecuteParallelInitEvent::class => 'onInitParallelExecution',
             Event\Execute\WorkerExecuteParallelResumeEvent::class => 'onResumeParallelExecution',
         ];
     }
@@ -53,7 +53,7 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
         ));
 
         if ($event->getWorkerConfiguration()->getOption(WorkerOptions::PARALLEL_EXECUTION)) {
-            $eventDispatcher->dispatch(new Event\Execute\WorkerExecuteParallelStartEvent($scheduleEvent));
+            $eventDispatcher->dispatch(new Event\Execute\WorkerExecuteParallelInitEvent($scheduleEvent));
         } else {
             $eventDispatcher->dispatch(new Event\Execute\WorkerExecuteSequentialEvent($scheduleEvent));
         }
@@ -73,31 +73,44 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
         $scheduleEvent();
     }
 
-    public function onStartParallelExecution(Event\Execute\WorkerExecuteParallelStartEvent $event): void
+    public function onInitParallelExecution(Event\Execute\WorkerExecuteParallelInitEvent $event): void
     {
         $scheduleEvent = $event->getScheduleEvent();
 
-        $fiber = new \Fiber(static function () use ($scheduleEvent): void {
+        $this->parallelExecution[] = new \Fiber(static function () use ($scheduleEvent): void {
             \Fiber::suspend();
 
             $scheduleEvent();
         });
 
-        $fiber->start();
 
-        $this->parallelExecution[] = $fiber;
     }
 
-    public function onResumeParallelExecution(): void
+    public function onResumeParallelExecution(Event\Execute\WorkerExecuteParallelResumeEvent $event): void
     {
-        foreach ($this->parallelExecution as $fiber) {
-            if (!$fiber->isStarted()) {
-                throw new \RuntimeException('Parallel execution is not started.');
-            }
+        $maxParallelExecution = $event->getWorkerConfiguration()->getOption(WorkerOptions::PARALLEL_EXECUTION_LIMIT);
 
-            $fiber->resume();
+        if ($maxParallelExecution <= 0) {
+            $maxParallelExecution = \count($this->parallelExecution);
         }
 
-        $this->parallelExecution = [];
+        while (\count($this->parallelExecution) > 0) {
+            $started = [];
+            foreach ($this->parallelExecution as $key => $fiber) {
+                if (\count($started) >= $maxParallelExecution) {
+                    break;
+                }
+
+                if (!$fiber->isStarted()) {
+                    $fiber->start();
+                    $started[$key] = $fiber;
+                }
+            }
+
+            foreach ($started as $key => $fiber) {
+                $fiber->resume();
+                unset($this->parallelExecution[$key]);
+            }
+        }
     }
 }
