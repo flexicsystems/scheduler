@@ -109,7 +109,7 @@ final class WorkerExecutionListener implements EventSubscriberInterface, LoggerA
             $event->getWorkerConfiguration()->getLogger()->info(\sprintf(
                 'Started %s parallel executions of remaining %s.',
                 \count($started),
-                \count($this->parallelExecution)
+                \count($this->parallelExecution),
             ));
 
             foreach ($started as $key => $fiber) {
