@@ -45,12 +45,14 @@ final class IntervalListener implements EventSubscriberInterface, LoggerAwareInt
         $memoryLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::MEMORY_LIMIT);
 
         if (null !== $memoryLimit && \memory_get_usage() > $memoryLimit) {
+            $event->getWorkerConfiguration()->getLogger()->info(\sprintf('Reached memory limit of %s.', (string) $memoryLimit));
             $event->getWorkerConfiguration()->getWorker()->stop();
         }
 
         $timeLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::TIME_LIMIT);
 
         if (null !== $timeLimit && \time() - $this->startTime > $timeLimit) {
+            $event->getWorkerConfiguration()->getLogger()->info(\sprintf('Reached time limit of %s.', (string) $timeLimit));
             $event->getWorkerConfiguration()->getWorker()->stop();
         }
     }
