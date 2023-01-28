@@ -3,100 +3,72 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022-2022 Flexic-Systems
+ * Copyright (c) 2022-2023 Flexic-Systems
  *
  * @author Hendrik Legge <hendrik.legge@themepoint.de>
  *
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 namespace Flexic\Scheduler;
 
 use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
-use Flexic\Scheduler\Configuration\Setup;
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
-use Flexic\Scheduler\DateTime\Timer;
-use Flexic\Scheduler\DateTime\Timezone;
 use Flexic\Scheduler\Event\Event;
 use Flexic\Scheduler\Factory\InitializedScheduleEventFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Worker extends BaseWorker
 {
-    private bool $shouldStop;
-
-    private readonly WorkerConfiguration $configuration;
-
-    private readonly Timer $timer;
-
     /**
      * @var array<int, InitializedScheduleEvent>
      */
     private readonly array $initializedScheduleEvent;
 
-    private Timezone $timezone;
-
     public function __construct(
-        WorkerConfiguration $configuration,
+        readonly private WorkerConfiguration $configuration,
         readonly private array $scheduleEvents,
         readonly private EventDispatcherInterface $eventDispatcher,
-        private bool $initialStarted = false,
+        private bool $initialized = false,
+        private bool $shouldStop = false,
+        readonly private Time\Timer $timer = new Time\Timer(),
+        readonly private Time\Timezone $timezone = new Time\Timezone(),
     ) {
-        $configuration->setWorker($this);
-        $this->configuration = $configuration;
-        $this->shouldStop = false;
-        $this->initializedScheduleEvent = InitializedScheduleEventFactory::initialize(
+        $this->configuration->setWorker($this);
+        $this->initializedScheduleEvent = (new InitializedScheduleEventFactory($this))->initialize(
             $this->scheduleEvents,
-            $this,
         );
-        $this->timer = new Timer();
-        $this->timezone = new Timezone();
-        Setup::registerEventListener($this->eventDispatcher);
+
+        $this->setupEventSystem($this->eventDispatcher);
 
         $this->eventDispatcher->dispatch(
-            new Event\WorkerInitializedEvent(
+            new Event\Lifecycle\WorkerInitializedEvent(
                 $this->configuration,
                 $this->initializedScheduleEvent,
             ),
         );
     }
 
-    /**
-     * @deprecated Using run() method directly is deprecated and will be removed in v1.1.0. Use start() method instead.
-     */
-    public function run(): void
-    {
-        \trigger_deprecation(
-            'flexic/scheduler',
-            '1.0.2',
-            'Using "%s" method directly is deprecated, use "%s" method instead.',
-            'run()',
-            'start()',
-        );
-
-        $this->start();
-    }
-
     public function start(): void
     {
-        if ($this->initialStarted) {
+        if ($this->initialized) {
             $this->timer->waitForNextTick();
         }
 
-        $this->initialStarted = true;
+        $this->initialized = true;
 
         $this->shouldStop = false;
 
         $this->execute();
 
-        $this->eventDispatcher->dispatch(new Event\WorkerStartEvent($this->configuration));
+        $this->eventDispatcher->dispatch(new Event\Lifecycle\WorkerStartEvent($this->configuration));
     }
 
     public function stop(): void
     {
         $this->shouldStop = true;
 
-        $this->eventDispatcher->dispatch(new Event\WorkerStopEvent($this->configuration));
+        $this->eventDispatcher->dispatch(new Event\Lifecycle\WorkerStopEvent($this->configuration));
     }
 
     public function restart(): void
@@ -124,7 +96,9 @@ final class Worker extends BaseWorker
             $this->eventDispatcher,
         );
 
-        $this->eventDispatcher->dispatch(new Event\WorkerUpdateEvent($this->configuration));
+        $this->eventDispatcher->dispatch(new Event\Lifecycle\WorkerUpdateEvent($this->configuration));
+
+        $worker->start();
 
         return $worker;
     }
@@ -134,7 +108,7 @@ final class Worker extends BaseWorker
         $interval = 1;
 
         while (!$this->shouldStop) {
-            $this->eventDispatcher->dispatch(new Event\WorkerIntervalStartEvent($this->configuration, $interval));
+            $this->eventDispatcher->dispatch(new Event\Interval\WorkerIntervalStartEvent($this->configuration, $interval));
 
             foreach ($this->initializedScheduleEvent as $event) {
                 /** @var Schedule $schedule */
@@ -145,15 +119,21 @@ final class Worker extends BaseWorker
                 if ($schedule->getExpression()->isDue()) {
                     $scheduleEvent = $event->getScheduleEvent();
 
-                    $scheduleEvent();
-
-                    $this->eventDispatcher->dispatch(new Event\WorkerRunningEvent($this->configuration, $scheduleEvent, $schedule, $interval));
+                    $this->eventDispatcher->dispatch(new Event\Execute\WorkerExecuteEvent(
+                        $this->configuration,
+                        $this->eventDispatcher,
+                        $scheduleEvent,
+                        $schedule,
+                        $interval,
+                    ));
                 }
 
                 $this->timezone->default();
             }
 
-            $this->eventDispatcher->dispatch(new Event\WorkerIntervalEndEvent($this->configuration, $interval));
+            $this->eventDispatcher->dispatch(new Event\Execute\WorkerExecuteParallelResumeEvent($this->configuration));
+
+            $this->eventDispatcher->dispatch(new Event\Interval\WorkerIntervalEndEvent($this->configuration, $interval));
 
             ++$interval;
 

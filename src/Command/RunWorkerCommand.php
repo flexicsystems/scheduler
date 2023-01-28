@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022-2022 Flexic-Systems
+ * Copyright (c) 2022-2023 Flexic-Systems
  *
  * @author Hendrik Legge <hendrik.legge@themepoint.de>
  *
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 namespace Flexic\Scheduler\Command;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
 use Flexic\Scheduler\Constants\WorkerOptions;
-use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
+use Flexic\Scheduler\Resolver\ScheduleEventFileResolver;
 use Flexic\Scheduler\Worker;
 use Symfony\Component\Console;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -69,6 +69,20 @@ final class RunWorkerCommand extends Console\Command\Command
             'The maximum memory to run.',
             null,
         );
+        $this->addOption(
+            WorkerOptions::PARALLEL_EXECUTION,
+            null,
+            Console\Input\InputOption::VALUE_NONE,
+            'Allow worker to run events parallel.',
+            null,
+        );
+        $this->addOption(
+            WorkerOptions::PARALLEL_EXECUTION_LIMIT,
+            null,
+            Console\Input\InputOption::VALUE_REQUIRED,
+            'The maximum number of parallel events to run.',
+            0,
+        );
         $this->addArgument(
             'schedule-event',
             Console\Input\InputArgument::IS_ARRAY,
@@ -83,23 +97,24 @@ final class RunWorkerCommand extends Console\Command\Command
     ): int {
         $io = new SymfonyStyle($input, $output);
 
-        $this->registerScheduleEvents(
-            (array) $input->getArgument('schedule-event'),
-            $io,
-        );
-
         $configuration = new WorkerConfiguration(
             [
                 WorkerOptions::SCHEDULE_EVENT_LIMIT => $input->getOption(WorkerOptions::SCHEDULE_EVENT_LIMIT),
                 WorkerOptions::INTERVAL_LIMIT => $input->getOption(WorkerOptions::INTERVAL_LIMIT),
                 WorkerOptions::TIME_LIMIT => $input->getOption(WorkerOptions::TIME_LIMIT),
                 WorkerOptions::MEMORY_LIMIT => $input->getOption(WorkerOptions::MEMORY_LIMIT),
+                WorkerOptions::PARALLEL_EXECUTION => $input->getOption(WorkerOptions::PARALLEL_EXECUTION),
+                WorkerOptions::PARALLEL_EXECUTION_LIMIT => $input->getOption(WorkerOptions::PARALLEL_EXECUTION_LIMIT),
             ],
             $io,
         );
 
-        $scheduleEvents = [];
-        \array_push($scheduleEvents, ...$this->scheduleEvents);
+        $eventFiles = $input->getArgument('schedule-event');
+
+        $scheduleEvents = (new ScheduleEventFileResolver())->resolve(
+            $this->scheduleEvents,
+            \is_array($eventFiles) ? $eventFiles : [],
+        );
 
         $worker = new Worker(
             $configuration,
@@ -110,57 +125,5 @@ final class RunWorkerCommand extends Console\Command\Command
         $worker->start();
 
         return Console\Command\Command::SUCCESS;
-    }
-
-    private function registerScheduleEvents(
-        array $scheduleEvents,
-        SymfonyStyle $io,
-    ): void {
-        if (\count($scheduleEvents) <= 0) {
-            $scheduleEvents = [];
-            \array_push($scheduleEvents, ...$this->scheduleEvents);
-
-            if (\count($scheduleEvents) <= 0) {
-                $io->error('No schedule events found.');
-
-                exit(1);
-            }
-
-            return;
-        }
-
-        $events = [];
-
-        foreach ($scheduleEvents as $eventFile) {
-            try {
-                $path = \realpath(\sprintf('%s/%s', \getcwd(), $eventFile));
-
-                if (false === $path) {
-                    $io->error(\sprintf('Schedule event file "%s" not found.', $eventFile));
-
-                    continue;
-                }
-
-                $configuration = require_once $path;
-
-                if ($configuration instanceof ScheduleEventInterface) {
-                    $events[] = $configuration;
-                }
-
-                if (\is_array($configuration)) {
-                    \array_map(static function (ScheduleEventInterface $event) use (&$events): void {
-                        $events[] = $event;
-                    }, \array_filter($configuration, static function ($event): bool {
-                        return $event instanceof ScheduleEventInterface;
-                    }));
-                }
-            } catch (\Exception $exception) {
-                $io->error(\sprintf('Unexpected error while load event file: %s', $exception->getMessage()));
-
-                continue;
-            }
-        }
-
-        $this->scheduleEvents = $events;
     }
 }

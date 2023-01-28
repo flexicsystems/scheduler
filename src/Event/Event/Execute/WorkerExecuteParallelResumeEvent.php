@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022-2022 Flexic-Systems
+ * Copyright (c) 2022-2023 Flexic-Systems
  *
  * @author Hendrik Legge <hendrik.legge@themepoint.de>
  *
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-namespace Flexic\Scheduler\Event\Event;
+namespace Flexic\Scheduler\Event\Event\Execute;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
 
-final class WorkerRestartEvent implements WorkerEventInterface
+final class WorkerExecuteParallelResumeEvent
 {
     public function __construct(
         readonly private WorkerConfiguration $workerConfiguration,

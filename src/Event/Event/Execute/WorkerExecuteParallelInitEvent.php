@@ -10,26 +10,19 @@ declare(strict_types=1);
  * @version 2.0.0
  */
 
-namespace Flexic\Scheduler\Configuration;
+namespace Flexic\Scheduler\Event\Event\Execute;
 
 use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
-use Flexic\Scheduler\Interfaces\ScheduleInterface;
 
-final class InitializedScheduleEvent
+final class WorkerExecuteParallelInitEvent
 {
     public function __construct(
         readonly private ScheduleEventInterface $scheduleEvent,
-        readonly private ScheduleInterface $schedule,
     ) {
     }
 
     public function getScheduleEvent(): ScheduleEventInterface
     {
         return $this->scheduleEvent;
-    }
-
-    public function getSchedule(): ScheduleInterface
-    {
-        return $this->schedule;
     }
 }

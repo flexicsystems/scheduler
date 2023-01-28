@@ -12,9 +12,10 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Interfaces;
 
-interface ScheduleInterface
+interface ScheduleEventFactoryInterface
 {
-    public function cron(string $expression): self;
-
-    public function timezone(string $timeZone): self;
+    /**
+     * @return ScheduleEventInterface[]
+     */
+    public function create(): array;
 }

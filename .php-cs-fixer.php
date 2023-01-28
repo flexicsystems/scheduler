@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022-2022 Flexic-Systems
+ * Copyright (c) 2022-2023 Flexic-Systems
  *
  * @author Hendrik Legge <hendrik.legge@themepoint.de>
  *
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 use Ergebnis\PhpCsFixer\Config;
@@ -19,7 +19,7 @@ Copyright (c) 2022-{$year} Flexic-Systems
 
 @author Hendrik Legge <hendrik.legge@themepoint.de>
 
-@version 1.0.0
+@version 2.0.0
 TXT;
 
 $config = Config\Factory::fromRuleSet(new Config\RuleSet\Php81($header), [
