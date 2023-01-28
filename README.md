@@ -19,7 +19,7 @@ to install `flexic/scheduler`.
 ### Setup Events to schedule
 
 ```php
-class MyScheduleEvent implements \Flexic\Scheduler\Interfaces\ScheduleEventInterface
+class MyScheduleEvent implements \Flexic\Scheduler\Interfaces\AbstractScheduleEventInterface
 {
     public function __invoke(): void
     {

@@ -12,18 +12,18 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Configuration;
 
-use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
+use Flexic\Scheduler\Interfaces\AbstractScheduleEventInterface;
 use Flexic\Scheduler\Interfaces\ScheduleInterface;
 
 final class InitializedScheduleEvent
 {
     public function __construct(
-        readonly private ScheduleEventInterface $scheduleEvent,
+        readonly private AbstractScheduleEventInterface $scheduleEvent,
         readonly private ScheduleInterface $schedule,
     ) {
     }
 
-    public function getScheduleEvent(): ScheduleEventInterface
+    public function getScheduleEvent(): AbstractScheduleEventInterface
     {
         return $this->scheduleEvent;
     }

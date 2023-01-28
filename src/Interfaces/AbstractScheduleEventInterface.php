@@ -12,10 +12,12 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Interfaces;
 
-interface ScheduleEventFactoryInterface
+interface AbstractScheduleEventInterface
 {
+    public function __invoke(): void;
+
     /**
-     * @return AbstractScheduleEventInterface[]
+     * Configure the schedule for schedule event.
      */
-    public function create(): array;
+    public function configure(ScheduleInterface $schedule): void;
 }

@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Resolver;
 
+use Flexic\Scheduler\Interfaces\AbstractScheduleEventInterface;
 use Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface;
-use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 
 final class ScheduleEventFileResolver
 {
@@ -38,13 +38,13 @@ final class ScheduleEventFileResolver
 
         $configuration = require $path;
 
-        if ($configuration instanceof ScheduleEventInterface || $configuration instanceof ScheduleEventFactoryInterface) {
+        if ($configuration instanceof AbstractScheduleEventInterface || $configuration instanceof ScheduleEventFactoryInterface) {
             return [$configuration];
         }
 
         if (\is_array($configuration)) {
             return \array_filter($configuration, static function ($event): bool {
-                return $event instanceof ScheduleEventInterface || $event instanceof ScheduleEventFactoryInterface;
+                return $event instanceof AbstractScheduleEventInterface || $event instanceof ScheduleEventFactoryInterface;
             });
         }
 

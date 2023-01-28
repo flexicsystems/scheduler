@@ -12,16 +12,16 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Event\Event\Execute;
 
-use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
+use Flexic\Scheduler\Interfaces\AbstractScheduleEventInterface;
 
 final class WorkerExecuteSequentialEvent
 {
     public function __construct(
-        readonly private ScheduleEventInterface $scheduleEvent,
+        readonly private AbstractScheduleEventInterface $scheduleEvent,
     ) {
     }
 
-    public function getScheduleEvent(): ScheduleEventInterface
+    public function getScheduleEvent(): AbstractScheduleEventInterface
     {
         return $this->scheduleEvent;
     }

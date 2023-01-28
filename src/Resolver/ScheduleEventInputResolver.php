@@ -12,22 +12,22 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Resolver;
 
+use Flexic\Scheduler\Interfaces\AbstractScheduleEventInterface;
 use Flexic\Scheduler\Interfaces\ScheduleEventFactoryInterface;
-use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
 
 final class ScheduleEventInputResolver
 {
     /**
-     * @param array<ScheduleEventFactoryInterface|ScheduleEventInterface> $input
+     * @param array<AbstractScheduleEventInterface|ScheduleEventFactoryInterface> $input
      *
-     * @return array<ScheduleEventInterface>
+     * @return array<AbstractScheduleEventInterface>
      */
     public function resolve(array $input): array
     {
         $events = [];
 
         foreach ($input as $item) {
-            if ($item instanceof ScheduleEventInterface) {
+            if ($item instanceof AbstractScheduleEventInterface) {
                 $events[] = $item;
             }
 

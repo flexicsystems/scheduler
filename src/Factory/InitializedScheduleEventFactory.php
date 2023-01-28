@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Flexic\Scheduler\Factory;
 
 use Flexic\Scheduler\Configuration\InitializedScheduleEvent;
-use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
+use Flexic\Scheduler\Interfaces\AbstractScheduleEventInterface;
 use Flexic\Scheduler\Interfaces\ScheduleWorkerControllable;
 use Flexic\Scheduler\Resolver\ScheduleEventInputResolver;
 use Flexic\Scheduler\Schedule;
@@ -31,7 +31,7 @@ final class InitializedScheduleEventFactory
         array $scheduleEvents,
     ): array {
         return \array_map(
-            function (ScheduleEventInterface $scheduleEvent): InitializedScheduleEvent {
+            function (AbstractScheduleEventInterface $scheduleEvent): InitializedScheduleEvent {
                 return $this->initializeEvent($scheduleEvent);
             },
             $this->scheduleEventInputResolver->resolve($scheduleEvents),
@@ -39,7 +39,7 @@ final class InitializedScheduleEventFactory
     }
 
     public function initializeEvent(
-        ScheduleEventInterface $scheduleEvent,
+        AbstractScheduleEventInterface $scheduleEvent,
     ): InitializedScheduleEvent {
         $schedule = new Schedule();
 

@@ -14,14 +14,14 @@ namespace Flexic\Scheduler\Event\Event\Run;
 
 use Flexic\Scheduler\Configuration\WorkerConfiguration;
 use Flexic\Scheduler\Event\Event\WorkerEventInterface;
-use Flexic\Scheduler\Interfaces\ScheduleEventInterface;
+use Flexic\Scheduler\Interfaces\AbstractScheduleEventInterface;
 use Flexic\Scheduler\Schedule;
 
 final class WorkerRunStartEvent implements WorkerEventInterface
 {
     public function __construct(
         readonly private WorkerConfiguration $workerConfiguration,
-        readonly private ScheduleEventInterface $scheduleEvent,
+        readonly private AbstractScheduleEventInterface $scheduleEvent,
         readonly private Schedule $schedule,
         readonly private int $interval,
     ) {
@@ -32,7 +32,7 @@ final class WorkerRunStartEvent implements WorkerEventInterface
         return $this->workerConfiguration;
     }
 
-    public function getScheduleEvent(): ScheduleEventInterface
+    public function getScheduleEvent(): AbstractScheduleEventInterface
     {
         return $this->scheduleEvent;
     }
