@@ -52,6 +52,7 @@ to start the schedule worker. Worker will automatically load all events from the
 | intervalLimit |                       Worker stops automatically after give amount of intervals.                       |      int      |    -    |
 | memoryLimit   |                 Worker stops automatically if usage of memory exceeds the given limit.                 |  int (bytes)  |    -    |
 | parallel      |                             Worker runs events in parallel if set to true.                             |    boolean    |  false  |
+| parallelLimit |                   Let worker run only defined amount of parallel runs at same time.                    |      int      |    -    |
 
 
 ### Setup Schedule Worker (own script)

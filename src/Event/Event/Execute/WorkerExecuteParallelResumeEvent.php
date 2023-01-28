@@ -12,9 +12,17 @@ declare(strict_types=1);
 
 namespace Flexic\Scheduler\Event\Event\Execute;
 
+use Flexic\Scheduler\Configuration\WorkerConfiguration;
+
 final class WorkerExecuteParallelResumeEvent
 {
-    public function __construct()
+    public function __construct(
+        readonly private WorkerConfiguration $workerConfiguration,
+    ) {
+    }
+
+    public function getWorkerConfiguration(): WorkerConfiguration
     {
+        return $this->workerConfiguration;
     }
 }
