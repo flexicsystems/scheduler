@@ -19,17 +19,18 @@ use Flexic\Scheduler\Worker;
 use Symfony\Component\Console;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class RunWorkerCommand extends Console\Command\Command
 {
     public const COMMAND_NAME = 'scheduler:run-worker';
 
-    private readonly EventDispatcher $eventDispatcher;
+    private readonly EventDispatcherInterface $eventDispatcher;
 
     private iterable $scheduleEvents;
 
     public function __construct(
-        ?EventDispatcher $eventDispatcher = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
         iterable $scheduleEvents = [],
     ) {
         parent::__construct(self::COMMAND_NAME);
