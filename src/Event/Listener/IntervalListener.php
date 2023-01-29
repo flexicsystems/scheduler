@@ -15,6 +15,7 @@ namespace Flexic\Scheduler\Event\Listener;
 use Flexic\Scheduler\Constants\WorkerOptions;
 use Flexic\Scheduler\Event\Event\Interval\WorkerIntervalEndEvent;
 use Flexic\Scheduler\Event\Event\Interval\WorkerIntervalStartEvent;
+use Flexic\Scheduler\Exception\InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -44,12 +45,20 @@ final class IntervalListener implements EventSubscriberInterface, LoggerAwareInt
 
         $memoryLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::MEMORY_LIMIT);
 
+        if (null !== $memoryLimit && !\is_int($memoryLimit) && !\is_float($memoryLimit)) {
+            throw new InvalidArgumentException(\sprintf('Option "%s" must be of type "int" or "float".', WorkerOptions::MEMORY_LIMIT));
+        }
+
         if (null !== $memoryLimit && \memory_get_usage() > $memoryLimit) {
             $event->getWorkerConfiguration()->getLogger()->info(\sprintf('Reached memory limit of %s.', (string) $memoryLimit));
             $event->getWorkerConfiguration()->getWorker()->stop();
         }
 
         $timeLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::TIME_LIMIT);
+
+        if (null !== $timeLimit && !\is_int($timeLimit) && !\is_float($timeLimit)) {
+            throw new InvalidArgumentException(\sprintf('Option "%s" must be of type "int" or "float".', WorkerOptions::TIME_LIMIT));
+        }
 
         if (null !== $timeLimit && \time() - $this->startTime > $timeLimit) {
             $event->getWorkerConfiguration()->getLogger()->info(\sprintf('Reached time limit of %s.', (string) $timeLimit));
