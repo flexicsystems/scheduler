@@ -1,3 +1,6 @@
 .build
 .dev
 vendor
+
+.idea
+.vscode

@@ -30,6 +30,6 @@ final class Timer
             0,
         );
 
-        return $next->getTimestamp() - $actual->getTimestamp();
+        return \max(0, $next->getTimestamp() - $actual->getTimestamp());
     }
 }
