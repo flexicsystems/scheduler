@@ -32,7 +32,7 @@ final class Timer
 
         $time = $next->getTimestamp() - $actual->getTimestamp();
 
-        if ($time < 0) {
+        if (0 > $time) {
             return 0;
         }
 
