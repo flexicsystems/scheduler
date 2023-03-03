@@ -30,6 +30,12 @@ final class Timer
             0,
         );
 
-        return $next->getTimestamp() - $actual->getTimestamp();
+        $time = $next->getTimestamp() - $actual->getTimestamp();
+
+        if ($time < 0) {
+            return 0;
+        }
+
+        return $time;
     }
 }
