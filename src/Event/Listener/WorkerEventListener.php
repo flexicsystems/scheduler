@@ -56,8 +56,12 @@ final class WorkerEventListener implements EventSubscriberInterface, LoggerAware
 
         $eventLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::SCHEDULE_EVENT_LIMIT);
 
-        if (null !== $eventLimit && !\is_int($eventLimit)) {
+        if (null !== $eventLimit && !\is_int($eventLimit) && !\is_float($eventLimit) && !\is_string($eventLimit)) {
             throw new InvalidArgumentException(\sprintf('Option "%s" must be of type "int".', WorkerOptions::SCHEDULE_EVENT_LIMIT));
+        }
+
+        if (\is_string($eventLimit) || \is_float($eventLimit)) {
+            $eventLimit = (int) $eventLimit;
         }
 
         if (null !== $eventLimit && $this->handledEvents > $eventLimit) {

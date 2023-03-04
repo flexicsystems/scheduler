@@ -45,8 +45,12 @@ final class IntervalListener implements EventSubscriberInterface, LoggerAwareInt
 
         $memoryLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::MEMORY_LIMIT);
 
-        if (null !== $memoryLimit && !\is_int($memoryLimit) && !\is_float($memoryLimit)) {
+        if (null !== $memoryLimit && !\is_int($memoryLimit) && !\is_float($memoryLimit) && !\is_string($memoryLimit)) {
             throw new InvalidArgumentException(\sprintf('Option "%s" must be of type "int" or "float".', WorkerOptions::MEMORY_LIMIT));
+        }
+
+        if (\is_string($memoryLimit)) {
+            $memoryLimit = (float) $memoryLimit;
         }
 
         if (null !== $memoryLimit && \memory_get_usage() > $memoryLimit) {
@@ -56,8 +60,12 @@ final class IntervalListener implements EventSubscriberInterface, LoggerAwareInt
 
         $timeLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::TIME_LIMIT);
 
-        if (null !== $timeLimit && !\is_int($timeLimit) && !\is_float($timeLimit)) {
+        if (null !== $timeLimit && !\is_int($timeLimit) && !\is_float($timeLimit) && !\is_string($timeLimit)) {
             throw new InvalidArgumentException(\sprintf('Option "%s" must be of type "int" or "float".', WorkerOptions::TIME_LIMIT));
+        }
+
+        if (\is_string($timeLimit)) {
+            $timeLimit = (float) $timeLimit;
         }
 
         if (null !== $timeLimit && \time() - $this->startTime > $timeLimit) {
