@@ -15,6 +15,7 @@ namespace Flexic\Scheduler\Event\Listener;
 use Flexic\Scheduler\Constants\WorkerOptions;
 use Flexic\Scheduler\Event\Event\Run\WorkerRunEndEvent;
 use Flexic\Scheduler\Event\Event\Run\WorkerRunStartEvent;
+use Flexic\Scheduler\Exception\InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -55,7 +56,12 @@ final class WorkerEventListener implements EventSubscriberInterface, LoggerAware
 
         $eventLimit = $event->getWorkerConfiguration()->getOption(WorkerOptions::SCHEDULE_EVENT_LIMIT);
 
-        if (null !== $eventLimit && $eventLimit > $this->handledEvents) {
+        if (null !== $eventLimit && !\is_int($eventLimit)) {
+            throw new InvalidArgumentException(\sprintf('Option "%s" must be of type "int".', WorkerOptions::SCHEDULE_EVENT_LIMIT));
+        }
+
+        if (null !== $eventLimit && $this->handledEvents > $eventLimit) {
+            $event->getWorkerConfiguration()->getLogger()->info(\sprintf('Reached event limit of %s.', $eventLimit));
             $event->getWorkerConfiguration()->getWorker()->stop();
         }
     }
