@@ -14,7 +14,8 @@ namespace Flexic\Scheduler\Time;
 
 final class Timer
 {
-    private const NEXT_TICK = '+ 1 minute';
+    private const TICK_LENGTH = 60;
+    private const NEXT_TICK = ('+ ' . self::TICK_LENGTH . ' seconds');
 
     public function waitForNextTick(): void
     {
@@ -33,7 +34,7 @@ final class Timer
         $time = $next->getTimestamp() - $actual->getTimestamp();
 
         if (0 > $time) {
-            return 0;
+            return self::TICK_LENGTH;
         }
 
         return $time;
