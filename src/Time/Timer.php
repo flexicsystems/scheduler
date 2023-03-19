@@ -15,6 +15,7 @@ namespace Flexic\Scheduler\Time;
 final class Timer
 {
     private const TICK_LENGTH = 60;
+
     private const NEXT_TICK = ('+ ' . self::TICK_LENGTH . ' seconds');
 
     public function waitForNextTick(): void
